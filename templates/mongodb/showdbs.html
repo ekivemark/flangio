@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+
+{% block extra_head %}
+<script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+$('.dropdown-toggle').dropdown();
+</script>
+{% endblock %}
+
+
+{% block content %}
+
+{% load i18n %}
+
+<div class="container">
+      
+            
+      <div class="row">
+      <h1>{% trans "Manage MongoDB" %}</h1>
+      </div>
+      
+      
+      
+      <div class="row">
+              
+               <div class="btn-group pull-right">   
+               <a class="btn pull-right btn-success dropdown-toggle btn-large" data-toggle="dropdown" href="#">
+                    <i class="icon-globe icon-white"></i> Go
+               <span class="caret"></span>     
+               </a>
+               <ul class="dropdown-menu">
+                    <li><a href="/mongodb/new-database">
+                        <i class="icon-plus-sign"></i> Create Database</a> </li>
+        
+                    <li><a href="/import/previous">
+                        <i class="icon-eye-open"></i> View Previous Imports</a> </li>
+                    
+                    <li><a href="/search/saved-searches">
+                                 <i class="icon-filter"></i> View Saved Searches</a> </li>
+        
+               </ul>
+               </div>
+            
+      
+      
+</div>
+
+
+
+
+
+<table class="table">
+
+   
+<thead>
+<tr>
+<th>Database</th>
+<th>Collections</th>
+
+</tr>
+</thead>
+ 
+<tbody>
+
+
+{% for d in dbs %}
+
+<tr class="success">
+<td>
+
+<div class="btn-group">
+    <a class="btn pull-left dropdown-toggle btn-primary btn-large" data-toggle="dropdown" href="#">
+    {{d.name}}
+    <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+        <li><a href="/mongodb/database/{{d.name}}/create-collection">
+            <i class="icon-plus-sign"></i> Create Collection</a> </li>
+        
+         <li><a href="/mongodb/database/{{d.name}}/drop">
+            <i class="icon-warning-sign"></i> Drop Database</a> </li>
+        
+      </ul>
+     </div>
+
+
+</td>
+<td>
+    {% for c in d.collections %}
+    <div class="btn-group">
+    <a class="btn pull-left dropdown-toggle btn-primary btn-large" data-toggle="dropdown" href="#">
+    {{c}}
+    <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+
+
+     <li><a  href="/mongodb/database/{{d.name}}/collection/{{c}}/create">
+            <i class="icon-plus-sign"></i> {% trans "Create a Document..." %}</a></li>
+     
+     <li><a  href="/mongodb/database/{{d.name}}/collection/{{c}}/update">
+            <i class="icon-refresh"></i> {% trans "Update a Document..." %}</a></li>
+     
+
+     <li><a  href="/mongodb/database/{{d.name}}/collection/{{c}}/ensure-index">
+            <i class="icon-fire"></i> {% trans "Create an Index..." %}</a></li>
+
+         
+      <li><a  href="/search/database/{{d.name}}/collection/{{c}}/create-saved-search">
+            <i class="icon-globe"></i> {% trans "Create a Saved Search..." %}</a></li>
+      
+      <li> <a  href="/search/saved-searches">
+            <i class="icon-eye-open"></i> {% trans "View Saved Searches..." %}</a></li>
+          
+      <li><a  href="/search/database/{{d.name}}/collection/{{c}}/complex-search">
+            <i class="icon-search"></i> {% trans "Run a Complex Search..." %}</a></li>
+          
+      <li> <a href="/import/database/{{d.name}}/collection/{{c}}/previous">
+            <i class="icon-eye-open"></i> {% trans "View Previous Imports..." %}</a></li>
+                
+     <li> <a href="/import/database/{{d.name}}/collection/{{c}}/file">
+            <i class="icon-upload"></i> {% trans "Import Data..." %}</a></li>
+         
+     <li> <a  href="/mongodb/database/{{d.name}}/collection/{{c}}/delete">
+            <i class="icon-step-backward"></i> {% trans "Delete Data from a Collection..." %} </a></li>
+
+
+     <li> <a  href="/mongodb/database/{{d.name}}/collection/{{c}}/clear">
+            <i class="icon-fast-backward"></i> {% trans "Clear Collection" %} </a></li>
+          
+     <li> <a  href="/mongodb/database/{{d.name}}/collection/{{c}}/drop">
+            <i class="icon-warning-sign"></i> {% trans "Drop Collection" %} </a></li>
+    
+    
+    </ul>
+    </div>
+    <br><br>
+             
+         
+         
+    {% endfor %}
+</td>
+</tr>
+{% endfor %}
+
+</tbody>
+
+    </table>
+
+
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block middle %}
+
+<div class="header-box">
+    <h1>Edit Report</h1>
+</div>
+
+<div class="content-box">
+
+    <form enctype="multipart/form-data" action="" method="POST" class="hive-form">
+        {% if error %}
+          <p class="error">ERROR: {{error}}</p>
+        {% endif %}
+
+        {% include "generic/form-loop.html" %}
+
+        {% csrf_token %}
+
+        <br/>
+        <p>
+            <input class="button" type="submit" value="Save" />
+        </p>
+    </form>
+
+</div>
+
+{% endblock %}

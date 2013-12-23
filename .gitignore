@@ -1,0 +1,13 @@
+*.pyc
+*.db
+*.pyo
+media/*
+settings_local.*
+docs/_build/*
+db/
+*.kpf
+uploads/
+apps/lymphoedema
+flangio/lymphoedemaurls.py
+templates/lymphoedema/
+

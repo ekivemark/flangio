@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% load i18n %}
+
+
+<div class="container">
+      <div class="row">
+              <a class="btn pull-right btn-primary btn-large" href="/search/create-saved-search">
+                <i class="icon-plus-sign icon-white"></i> {% trans "New Saved Search" %}
+                    </a>
+              <h1>{% trans "Saved Searches" %}</h1>
+      </div>
+</div>
+
+
+<table class="table">
+   
+
+<thead>
+<tr>
+<th>Title</th>
+<th>Slug</th>
+<th>Database/Collection</th>
+<th>Query</th>
+<th>Actions</th>
+
+</tr>
+</thead>
+ 
+<tbody>
+
+
+{% for s in  savedsearches %}
+
+<tr class="success">
+<td>{{s.title}}    
+            
+</td>
+<td>{{s.slug }} </td>
+<td>{{s.database_name}}/{{s.collection_name}}</td>
+<td><pre>{{s.query}}</pre></td>
+<td><a class="btn pull-left btn-primary btn-large" href="/search/database/{{s.database_name}}/collection/{{s.collection_name}}/saved-search/update/{{s.slug}}">
+            <i class="icon-edit  icon-white"></i> Edit</a>
+             <a class="btn pull-left btn-danger btn-large" href="/search/database/{{s.database_name}}/collection/{{s.collection_name}}/saved-search/delete/{{s.slug}}">
+            <i class="icon-remove-sign  icon-white"></i> Delete</a>
+</td>
+
+</tr>
+{% endfor %}
+
+</tbody>
+
+    </table>
+
+
+
+Run the search by going to the url
+
+<pre>https://[flangioSERVER]/search/run-saved-search/[slug]</pre>
+
+You must be authenticated to run the search.
+
+{% endblock %}

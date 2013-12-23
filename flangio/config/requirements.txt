@@ -1,0 +1,16 @@
+python-omhe
+Django==1.5.4
+boto
+django_ses
+pymongo
+xlwt
+dict2xml
+
+django-bootstrap-form
+django-extensions
+django-social-auth
+python-twitter
+facebook-sdk
+python-memcached
+Pillow
+django-localflavor

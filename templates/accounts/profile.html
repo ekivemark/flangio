@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+
+  <div class="container">
+    <div class="hero-unit">
+    <h1>{% trans "Account Settings" %}</h1>
+  <br>
+    
+    <div class="row">
+    <div class="span7 center">
+      <form class="well" method="post" action="">
+        {% csrf_token %}
+        <table>
+        
+        {% load bootstrap %}
+        {{ form|bootstrap }}
+
+        </table>
+        <input type="submit" class="btn-large btn-primary" value="{% trans 'Login' %}" />
+      </form>
+    </div>
+  </div>
+
+
+<p>If you connect your flangio account with your Facebook or Twitter accounts, you'll be able to login
+with these credentials next time. /p> 	
+{% if "facebook" not in social_nets %}
+	<p><img src="{{ STATIC_PREFIX }}img/fb_icon.png" alt="Facebook" /> <a href="{% url 'socialauth_begin' 'facebook' %}?next={{ request.path }}">Connect to Facebook Account</a></p>
+{% else %}
+	<p><img src="{{ STATIC_PREFIX }}img/fb_icon.png" alt="Facebook" /> <a href="{% url 'socialauth_disconnect' 'facebook' %}?next={{ request.path }}">Disconnect from Facebook Account</a></p>
+{% endif %}
+
+{% if "twitter" not in social_nets %}
+	<p><img src="{{ STATIC_PREFIX }}img/tw_icon.gif" alt="Twitter" /> <a href="{% url 'socialauth_begin' 'twitter' %}?next={{ request.path }}">Connect to Twitter Account</a></p>
+{% else %}
+	<p><img src="{{ STATIC_PREFIX }}img/tw_icon.gif" alt="Twitter" /> <a href="{% url 'socialauth_disconnect' 'twitter' %}?next={{ request.path }}">Disconnect from Twitter Account</a></p>
+{% endif %}
+
+{% if "google-oauth2" not in social_nets %}
+		<a href="{% url 'socialauth_begin' 'google-oauth2' %}?next={{ request.path }}">Associate with Google</a><br>
+	{% else %}
+		<a href="{% url 'socialauth_disconnect' 'google-oauth2' %}?next={{ request.path }}">Disconnect Google</a><br>
+	{% endif %}
+
+	
+	{% if "instagram" not in social_nets %}
+		<a href="{% url 'socialauth_begin' 'instagram' %}?next={{ request.path }}">Associate with Instagram</a><br>
+	{% else %}
+		<a href="{% url 'socialauth_disconnect' 'instagram' %}?next={{ request.path }}">Disconnect Instagram</a><br>	
+	{% endif %}
+	
+
+
+
+
+
+    
+{% endblock %}
+
+
+
+{% extends "bakers_club/components/base.html" %} 
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+
+{% block right_content %}
+
+	<h2>My Profile</h2>
+
+	<p>
+		Help Duncan Hines&reg; tailor your search results specifically to your tastes! Tell us your favorite flavors, hobbies and special occasions to generate recipes and inspiration especially for you.
+	</p>
+
+	<hr />
+
+	<form id="profile_form" class="dashboard_form validate form-horizontal" method="post" action="" enctype="multipart/form-data">
+
+		<fieldset class="your_information">
+			{% csrf_token %}
+			<div class="topline clearfix">
+				<h3>My Information</h3>
+				<p>Your personal information is never displayed publicly.</p>
+				<p class="required">Fields in red are required.</p>
+			</div>
+
+	
+			{% if form.non_field_errors %}
+			  <div class="non-field-errors">
+			    {% for err in form.non_field_errors %}
+			      <p class="form-error">{{ err }}</p>
+			    {% endfor %}
+			  </div>
+			{% endif %}
+			
+			  {% for field in form %}
+					
+					
+
+					{% if field.name = 'profile_public' %}
+					    <div class="control-group form_field wrp_{{field.name}}   {% if field.errors and field.errors  != '' %}error {%endif%}">
+
+						
+						<div class="controls form-inputs">
+						  
+						  
+						  <ul>
+						    <li>
+						    	<label for="id_profile_public_0">
+							        <input id="id_profile_public_0" class="custom_checkbox radio" type="radio" value="0" name="profile_public" {% if request.user.get_profile.profile_public ==  0 %}checked="checked" {% endif %}></input>
+								    <div class="radio_text">
+								    	<div class="lbl-header">Private</div>
+								    	Your recipe box and social network will be hidden.
+								    </div>
+								 </label>						    
+						    </li>
+						    
+						    <li>
+						    	<label for="id_profile_public_1">
+							        <input id="id_profile_public_1" class="custom_checkbox radio" type="radio" value="1" name="profile_public" {% if request.user.get_profile.profile_public == 1 %}checked="checked" {% endif %}></input>
+								 	<div class="radio_text">
+								 		<div class="lbl-header">Public</div>
+	                                    Recipe box, profile, photo, submitted content, and social network visible. Other members can follow you to find out about your latest submitted content.  
+							    	</div>
+						   		</label>
+						    </li>
+
+						    
+						  </ul>
+						  
+						</div>
+
+						<hr style="margin-bottom: 0; padding-bottom:0;" />
+				  
+						<div class="errors">
+						{% if field.errors and field.errors  != '' %}
+						   <div class="validation_msg  field_errors">{{ field.errors }}</div>
+						{%endif%}
+						</div>
+					    </div>
+				  	{% else %}
+				   
+				  		{% if field.name = 'hobbies' %}
+	
+							<div class="topline clearfix">
+								<h3>Hobbies/Interests</h3>
+								<p>What do you love to do? The more we know, the better the chance of finding a perfectly delicious match for your interests.</p>
+							</div>
+							{% for tag in field.field.choices %}
+								{% if forloop.first or  forloop.counter0|divisibleby:3 %}
+									<div class="row-fluid">
+								 {% endif %}
+		                                	
+							<div class="span4">
+	                                		
+                                              		 
+
+							<input  name="hobbies" 
+								type="checkbox"
+								id="profile_hobbies_{{tag.0}}"
+								class="custom_checkbox" 
+								data-label="{{tag.1}}" 
+								value="{{ tag.0 }}"
+								{% if  tag.0 in user_hobbies_checked %}
+									checked="checked"
+                                              			{% endif %} 	
+                                              			/>
+							</div>
+		                                
+						{% if forloop.last or forloop.counter|divisibleby:3 %}
+		                                  </div> 
+		                                {%endif%}
+
+	                               {% endfor %}
+				       <hr />
+				       <h3>Privacy Settings</h3>
+				       
+				  		{% else %}
+							{% include "website/components/form_field.html" %}
+						{%endif%}
+					{% endif %}
+     	    	{% endfor %}
+     	    <div class="button-bar">
+				<input type="submit"  class="red-button submit" value="Update My Settings">
+			</div>
+		</form>
+
+
+	<hr />
+
+	<h3>Connect My Bakers Club Membership</h3>
+
+	<p>If you connect your Baker's Club membership with your Facebook or Twitter accounts, you'll be able to login to the Baker's Blub with one click next time. 
+		Just click the "Log in with Facebook" or "Log in with Twitter" buttons on your next visit!</p> 	
+		{% if "facebook" not in social_nets %}
+			<p><img src="{{ STATIC_PREFIX }}img/fb_icon.png" alt="Facebook" /> <a href="{% url 'socialauth_begin' 'facebook' %}?next={{ request.path }}">Connect to Facebook Account</a></p>
+		{% else %}
+			<p><img src="{{ STATIC_PREFIX }}img/fb_icon.png" alt="Facebook" /> <a href="{% url 'socialauth_disconnect' 'facebook' %}?next={{ request.path }}">Disconnect from Facebook Account</a></p>
+		{% endif %}
+		
+		{% if "twitter" not in social_nets %}
+			<p><img src="{{ STATIC_PREFIX }}img/tw_icon.gif" alt="Twitter" /> <a href="{% url 'socialauth_begin' 'twitter' %}?next={{ request.path }}">Connect to Twitter Account</a></p>
+		{% else %}
+			<p><img src="{{ STATIC_PREFIX }}img/tw_icon.gif" alt="Twitter" /> <a href="{% url 'socialauth_disconnect' 'twitter' %}?next={{ request.path }}">Disconnect from Twitter Account</a></p>
+		{% endif %}
+		
+		{% comment %}
+
+			*** Commenting this out until we fully define the functionality re: Google+ and INstagram. -JG ***
+			{% if "google-oauth2" not in social_nets %}
+				<a href="{% url 'socialauth_begin' 'google-oauth2' %}?next={{ request.path }}">Associate with Google</a><br>
+			{% else %}
+				<a href="{% url 'socialauth_disconnect' 'google-oauth2' %}?next={{ request.path }}">Disconnect Google</a><br>
+			{% endif %}
+
+			
+			{% if "instagram" not in social_nets %}
+				<a href="{% url 'socialauth_begin' 'instagram' %}?next={{ request.path }}">Associate with Instagram</a><br>
+			{% else %}
+				<a href="{% url 'socialauth_disconnect' 'instagram' %}?next={{ request.path }}">Disconnect Instagram</a><br>	
+			{% endif %}
+		{% endcomment %}
+
+
+		<hr>
+			<h3>Password</h3> 
+			<a href="{% url 'accounts_change_password' %}" class="red-button link">Change My Password</a>
+
+{% comment %}
+
+
+		<fieldset class="photo">
+
+			<div class="topline clearfix">
+				<h3>Profile Photo</h3>
+				Upload your own or choose from the options below!
+			</div>
+
+			<div class="control-group">
+						
+				<div class="controls">
+			
+					<div class="fileupload fileupload-new" data-provides="fileupload">
+						<div class="input-append">
+							<div class="uneditable-input">
+								<i class="icon-file fileupload-exists"></i> 
+								<span class="fileupload-preview"></span>
+							</div>
+							<span class="btn btn-file">
+								<span class="fileupload-new">Choose File</span>
+								<span class="fileupload-exists">Change</span>
+								<input name="profile_upload" type="file" value="" />
+							</span>
+							<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+						</div>
+					</div>
+					
+				</div>
+
+				<p><small>Must be at least 130 x 130 pixels if included.</small></p>
+
+				
+			</div>
+
+
+		</fieldset>
+
+		
+{% endcomment %}
+	
+
+{% endblock right_content %}
