@@ -1,15 +1,15 @@
-flangio - Django-based framework for MongoDB
+Flang.io - Django-based framework for MongoDB
 =============================================
 
 
 Introduction:
 -------------
 
-flangio was designed for data collection in a healthcare and research setting,
+Flangio was designed for data collection in a healthcare and research setting,
 but it is a general MongoDB management tool that adds a number of additional
 features.
 
-flangio allows you to :
+Flangio allows you to :
 
 
 * Perform basic database operations via a web-site including the ability to
