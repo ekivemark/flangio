@@ -1,7 +1,7 @@
 import os
 import sys
 
-sys.path.append('/home/ubuntu/django-apps/')
+sys.path.append('/home/ubuntu/django-projects/flangio')
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'flangio.settings'
 
