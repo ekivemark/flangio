@@ -1,11 +1,6 @@
 flangio - Django-based framework for MongoDB
 =============================================
 
-Copyright: Videntity Systems, Inc. 2010-2013
-
-![Alt text](http://videntitystatic.s3.amazonaws.com/logo/flangio-by-videntity-logo.png)
-
-
 
 Introduction:
 -------------
@@ -19,7 +14,7 @@ flangio allows you to :
 
 * Perform basic database operations via a web-site including the ability to
 easily import CSV and perform searches that return Microsoft Excel(.xls),
-CSV(.csv), XML(.xml), and JSON(.json). - No programming experience required. 
+CSV(.csv), HTML(.html), and JSON(.json). - No programming experience required. 
 
 * Use flangio's built-in RESTFul API framework or use our examples to quickly
 build your own.  - No programming experience required. 
@@ -199,13 +194,6 @@ flangio extends Django's `settings.py` file for its custom settings parameters.
                                    "tar.gz", "rxnorm", "dicom_image",
                                    "dicom_structured_report", "x10", "idc",
                                    "edi", )
-
-Full Documentation
-~~~~~~~~~~~~~~~~~~
-There is more to explore. Read the full documentation at
-
-http://docs.flangio.org
-http://flangiodocs.s3.amazonaws.com/index.html
 
 
 Installation on Ubuntu 13.04:
