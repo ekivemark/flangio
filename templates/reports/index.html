@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block active_nav_tab %}reports-active{% endblock %}
+
+{% block featureBox %}
+
+<div class="header-box">
+    <h1>Reports</h1>
+</div>
+
+    <div class="content-group">
+       Create a custom report, or choose one of the special reports. 
+    </div>
+
+
+<div class="task-group">
+<h2>Dynamic Report Generation</h2>
+<ul  class="link-list" >
+    <li><a href="./custom/">Create a Custom Report</a></li>
+</ul>
+</div>
+
+
+<div class="task-group">
+<h2>Special Reports</h2>
+</ul>
+    <ul class="link-list" >
+        <li><a href="javascript:window.open('/export/export-window?r_title=Basic&nbsp;HIV&nbsp;Report&r_url=/export/hiv-to-excel','export_window','status=1,menubar=1,width=550,height=350');">Basic HIV Report</a></li>
+        <li><a href="javascript:window.open('/export/export-window?r_title=HIV&nbsp;Report&nbsp;for&nbsp;DC&nbsp;Health&nbsp;Dept/&nbsp;CDC&r_url=/export/cdc-to-excel','export_window','status=1,menubar=1,width=550,height=350');">HIV Report for DC Health Department and CDC</a></li>
+        <li><a href="javascript:window.open('/export/export-window?r_title=NOMS&nbsp;Report&nbsp;for&nbsp;SAIC&r_url=/export/noms-to-excel','export_window','status=1,menubar=1,width=550,height=350');">NOMS Report for SAIS ( SAMHSA )</a></li>
+    </ul>
+</div>
+
+
+
+{% endblock %}
+
