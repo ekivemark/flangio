@@ -85,6 +85,27 @@ def api_user_update(request):
 
 
 
+@json_login_required
+def api_user_delete(request, email):
+    try:
+        u = User.objects.get(email=email)
+    except User.DoesNotExist:
+        message ="User %s does not exist." % (email)
+        jsond={"code": 404, "message": message}
+        jsonstr=json.dumps(jsond, indent = 4,)
+        return HttpResponse(jsonstr, status=404, mimetype="application/json")
+        
+    u.delete()
+    message ="User %s deleted." % (email)
+    jsond={"code": 200, "message": message}
+    jsonstr=json.dumps(jsond, indent = 4,)
+    return HttpResponse(jsonstr, status=200, mimetype="application/json")
+    
+    
+
+
+
+
 
 def user_create(request):
     name = _("Create User Account")
@@ -92,7 +113,7 @@ def user_create(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('login'))
+            return HttpResponseRedirect(reverse('home'))
         else:
             #The form is invalid
             messages.error(request,_("Please correct the errors in the form."))
@@ -101,9 +122,7 @@ def user_create(request):
                                             'name':name,
                                             },
                                            RequestContext(request))
-
-  #this is a GET
-
+    #this is a GET
     context= {'name':name,
               'form': UserCreationForm()
               }
@@ -129,9 +148,7 @@ def user_update(request):
                                             'name':name,
                                             },
                                            RequestContext(request))
-
-  #this is a GET
-
+   #this is a GET
     context= {'name':name,
               'form': UserChangeForm(instance=request.user)
               }
