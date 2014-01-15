@@ -1,4 +1,3 @@
-from django.core.validators import email_re
 import binascii
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User, AnonymousUser
@@ -13,9 +12,35 @@ from django.template import RequestContext
 from models import flangioUser as User
 
 
-class BasicBackend:
+
+class HTTPAuthBackend(object):
+    
     supports_object_permissions=False
     supports_anonymous_user=False
+    
+    def authenticate(self, username=None, password=None):
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return None
+
+        if user.check_password(password):
+            return user
+
+    def get_user(self, user_id):
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return None
+    
+    
+
+
+class BasicBackend:
+    
+    supports_object_permissions=False
+    supports_anonymous_user=False
+    
     def authenticate(self, username=None, password=None):
         #print "Basic backend", username
         try:
@@ -33,50 +58,28 @@ class BasicBackend:
             return None
 
 class EmailBackend(BasicBackend):
+    
     supports_object_permissions=False
     supports_anonymous_user=False
+    
     def authenticate(self, username=None, password=None):
         
-        #If username is an email address, then try to pull it up
-        if email_re.search(username):
-            try:
-                user = User.objects.get(email=username)
-            except User.DoesNotExist:
-                return None
-        else:
-            #We have a non-email address username we should try username
-            try:
-                user = User.objects.get(username=username)
-            except User.DoesNotExist:
-                return None
+        try:
+            user = User.objects.get(email=username)
+        except User.DoesNotExist:
+            return None
         
         if user.check_password(password):
             return user
         
-class PINBackend(BasicBackend):
-    supports_object_permissions=False
-    supports_anonymous_user=False
-    def authenticate(self, username=None, password=None):
-        #If username is an email address, then try to pull it up
-        if email_re.search(username):
-            try:
-                user = User.objects.get(email=username)
-            except User.DoesNotExist:
-                return None
-        else:
-            #We have a non-email address username we should try username
-            try:
-                user = User.objects.get(username=username)
-            except User.DoesNotExist:
-                return None
-        if str(user.pin)==str(password):
-            return user
+        
 
 class MobilePINBackend(BasicBackend):
+    
     supports_object_permissions=False
     supports_anonymous_user=False
-    def authenticate(self, username=None, password=None):
-        
+    
+    def authenticate(self, username=None, password=None):    
         #We have a non-email address username we should try username
         try:
             user = User.objects.get(mobile_phone_number=username)
@@ -87,30 +90,3 @@ class MobilePINBackend(BasicBackend):
             return user
         else:
             return None
-
-
-
-
-
-
-class HTTPAuthBackend(object):
-    supports_object_permissions=False
-    supports_anonymous_user=False
-    def authenticate(self, username=None, password=None):
-        #print "Basic backend", username
-        try:
-            user = User.objects.get(username=username)
-        except User.DoesNotExist:
-            return None
-
-        if user.check_password(password):
-            return user
-
-    def get_user(self, user_id):
-        try:
-            return User.objects.get(pk=user_id)
-        except User.DoesNotExist:
-            return None
-    
-    
-    
