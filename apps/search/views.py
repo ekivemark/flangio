@@ -406,11 +406,9 @@ def run_saved_search_by_slug(request, slug, skip=0, limit = settings.MONGO_LIMIT
         return HttpResponse(response, status=int(response_dict['code']),
                 mimetype="application/json")
     
-    
-    
     try:
         query = json.loads(ss.query)
-        print ss.query
+        #print ss.query
     
     except ValueError:
         response_dict = {}
@@ -428,26 +426,26 @@ def run_saved_search_by_slug(request, slug, skip=0, limit = settings.MONGO_LIMIT
     key_list=()
     if ss.return_keys:  
         key_list = shlex.split(ss.return_keys)
-    print ss.query, ss.database_name, ss.collection_name
+    #print ss.query, ss.database_name, ss.collection_name
+    
     if ss.output_format=="json":
-        
         return search_json(request, database_name=ss.database_name,
                            collection_name =ss.collection_name,
-                           query = query, skip=int(skip), limit=int(limit),
+                           query = query, skip=int(skip), limit=int(ss.default_limit),
                            return_keys= key_list)
     
     if ss.output_format=="xml":
         return search_xml(request,
                           database_name=ss.database_name,
                            collection_name =ss.collection_name,
-                          query = query,
+                          query = query, skip=int(skip), limit=int(ss.default_limit),
                            return_keys= key_list) 
     
     if ss.output_format=="html":
         return search_html(request,
                           database_name=ss.database_name,
                           collection_name =ss.collection_name,
-                          query = query,
+                          query = query, skip=int(skip), limit=int(ss.default_limit),
                           return_keys= key_list) 
     
 
@@ -455,14 +453,14 @@ def run_saved_search_by_slug(request, slug, skip=0, limit = settings.MONGO_LIMIT
         return search_csv(request,
                           database_name=ss.database_name,
                            collection_name =ss.collection_name,
-                          query = query,
+                          query = query, skip=int(skip), limit=int(ss.default_limit),
                            return_keys= key_list)
     
     if ss.output_format=="xls":
         return search_xls(request,
                           database_name=ss.database_name,
                           collection_name =ss.collection_name,
-                          query = query,
+                          query = query, skip=int(skip), limit=int(ss.default_limit),
                           return_keys= key_list)
     
     #these next line "should" never execute.
