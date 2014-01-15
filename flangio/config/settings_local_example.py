@@ -44,8 +44,8 @@ BINARY_STORAGE="AWSS3"
 #Set these values to your own AWS S3 credentials.
 if BINARY_STORAGE=="AWSS3":
     AWS_BUCKET="flangiomedia"
-    AWS_KEY="AKIAI3FSWI4AOSJKO6IA"
-    AWS_SECRET="KqZAz0R+VddB0+huVkqXQnV6F3sCFCydOk6Q6TSY"
+    AWS_KEY="your-key"
+    AWS_SECRET="your-secret"
     AWS_PUBLIC=False
 elif BINARY_STORAGE=="LOCAL":
     LOCAL_BINARY_FILE_DIR=os.path.join(BASE_DIR, 'media')
