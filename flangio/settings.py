@@ -216,8 +216,9 @@ BINARY_STORAGE = "LOCAL"
 # Referenced in settings_local.py to set location of binary storage.
 
 
-#Sort by these columns on the default
+#Global control of output (CSV, XLS).
 SORTCOLUMNS= ()
+ALPHABETIZE_COLUMNS   = False
 
 
 
@@ -232,7 +233,6 @@ SINCE_ID_FILE = os.path.join(BASE_DIR, 'db/since.id')
 
 
 ALLOWABLE_TRANSACTION_TYPES = ("text",)
-
 
 USERTYPE_CHOICES =(('S','Standard'),
                    ('P','Application'),)
