@@ -522,6 +522,7 @@ def complex_search(request, database_name=settings.MONGO_DB_NAME,
         form = ComplexSearchForm(request.POST)
         if form.is_valid():
             query = form.cleaned_data['query']
+            limit = form.cleaned_data['limit']
             try:
                 query = json.loads(query)
             except ValueError:
@@ -537,13 +538,13 @@ def complex_search(request, database_name=settings.MONGO_DB_NAME,
                                     mimetype="application/json")
             #Query was valid JSON    
             if form.cleaned_data['output_format']=="json":
-                return search_json(request, query = query)
+                return search_json(request, query = query, limit=limit)
             if form.cleaned_data['output_format']=="xml":
-                return search_xml(request, query = query) 
+                return search_xml(request, query = query, limit=limit) 
             if form.cleaned_data['output_format']=="csv":
-                return search_csv(request, query = query)
+                return search_csv(request, query = query, limit=limit)
             if form.cleaned_data['output_format']=="xls":
-                return search_xls(request, query = query)
+                return search_xls(request, query = query, limit=limit)
             
             #these next line "should" never execute, but here just in case.
             response_dict = {}
