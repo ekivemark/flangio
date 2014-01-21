@@ -44,8 +44,10 @@ def authorize(request):
     return auth
 
 def unauthorized_json_response(additional_info=None):
-    body={"code": "401",
-          "message": "Unauthorized - Your account credentials were invalid."}
+    body={"code": 401,
+          "message": "Unauthorized - Your account credentials were invalid.",
+          "errors": [ "Unauthorized - Your account credentials were invalid.", ]
+          }
     if additional_info:
         body['message']="%s %s" % (body['message'], additional_info)
     body=json.dumps(body, indent=4, )
