@@ -81,6 +81,7 @@ class flangioUser(AbstractBaseUser, PermissionsMixin):
  
     user_type   = models.CharField(max_length=10,
                                    choices=settings.USERTYPE_CHOICES,
+                                   blank=True
                                    )
     vid                 = models.CharField(max_length=15, blank=True,
                            #default = genereate_vid
@@ -97,9 +98,9 @@ class flangioUser(AbstractBaseUser, PermissionsMixin):
                                               choices=settings.GENDER_CHOICES)
     #daily_request_max      = models.PositiveIntegerField(blank=True, default =1000, max_length=10)
     
-    year_of_birth          = models.PositiveIntegerField(blank=True, default =0, max_length=4)
-    height_inches          = models.PositiveIntegerField(blank=True, default =0, max_length=3)
-    weight_lbs             = models.PositiveIntegerField(blank=True, default =0, max_length=4)
+    year_of_birth          = models.CharField(blank=True, default ="", max_length=4)
+    height_inches          = models.CharField(blank=True, default ="", max_length=3)
+    weight_lbs             = models.CharField(blank=True, default ="", max_length=4)
     state                  = models.CharField(blank=True, max_length=2,
                                         choices=US_STATES,)
     city                   = models.CharField(max_length=256, blank=True, default="")
@@ -107,22 +108,15 @@ class flangioUser(AbstractBaseUser, PermissionsMixin):
     mobile_phone_number         = PhoneNumberField(max_length=15, blank=True, default="")
     fax_number                  = PhoneNumberField(max_length=15, blank=True, default="")
     organization                = models.CharField(max_length=100, blank=True, default="")
-    npi                         = models.CharField(max_length=20, blank=True,
-                                    verbose_name="National Provider Identifier (NPI)")
-    
-    
-    
+
     photo_image             = models.ImageField(blank = True, null=False, default='',
                                     max_length=255L, upload_to="avatars",
                                     verbose_name= "Profile Photo")
     
-    last_soc_login_avatar_url =  models.URLField(blank = True, max_length=200, default="", null=True)
-
     last_login_via          = models.CharField(max_length=10, choices=SOCIAL_CHOICES,
                                                default="email")
     email_verified          = models.BooleanField(default=False)
 
-    
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

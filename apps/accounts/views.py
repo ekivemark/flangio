@@ -108,6 +108,7 @@ def api_user_delete(request, email):
 
 
 def user_create(request):
+
     name = _("Create User Account")
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
