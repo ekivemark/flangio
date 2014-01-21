@@ -18,7 +18,7 @@ class LoginForm(forms.Form):
 
 
 class UserCreationForm(forms.ModelForm):
-    """
+    """ 
 A form that creates a user, with no privileges, from the given username and
 password.
 """
@@ -46,7 +46,9 @@ password.
 
     class Meta:
         model = User
-        fields = ("user_type", "username", "email", )
+        fields = ("first_name",
+                  "last_name",  "username", "email", "user_type", "gender",
+                  "year_of_birth")
 
     def clean_username(self):
         # Since User.username is unique, this check is redundant,

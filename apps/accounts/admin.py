@@ -39,8 +39,8 @@ class flangioUserAdmin(UserAdmin):
                                          'pin','gender','year_of_birth',
                                          'height_inches', 'weight_lbs', 'state',
                                          'city', 'postal_code', 'mobile_phone_number',
-                                         'fax_number', 'organization', 'npi',
-                                         'photo_image','last_soc_login_avatar_url'
+                                         'fax_number', 'organization', 
+                                         'photo_image',
                                            )}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
                                    'groups', 'user_permissions')}),

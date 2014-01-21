@@ -17,6 +17,7 @@ urlpatterns = patterns('',
             name='api-test-credentials'),
     url(r'api/user/create',  csrf_exempt(json_login_required(api_user_create)),
         name='api_user_create'),
+    
     #TODO
     #url(r'api/user/read', api_read_user,  name='api_read_user'),
     #url(r'api/user/update', api_update_user,  name='api_update_user'),
@@ -34,16 +35,7 @@ urlpatterns = patterns('',
     url(r'login',  simple_email_login, name='login'),
     url(r'logout', simple_logout,  name='logout'),
     
-    
-    url(r'account-already-in-use/',
-        TemplateView.as_view(template_name='accounts/already-in-use.html'),
-        name='accounts_already_in_use'),
-    
-    
-    
-    #TODO
-    
-  
+
     
     #url(r'update',   update_user,  name='update_user'),
     #url(r'delete', delete_user,  name='delete_user'),
