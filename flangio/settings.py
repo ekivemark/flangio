@@ -255,6 +255,18 @@ GENDER_CHOICES=(
         ('system','system'),
         )
 
+
+GENDER_CHOICES=(
+        ('F','Female'),
+        ('M','Male'),
+        ('TMTF','Transgender Male to Female'),
+        ('TFTM','Transgender Female to Male'),
+        ('SRMTF','Sexual Reassignment Mal to Female'),
+        ('SRFTM','Sexual Reassignment Female to Male'),
+        ('S','System'),
+        )
+
+
 # To enable you local settings create or copy the example
 # file found in ./config/settings_[EXAMPLE].py to the same
 # directory as settings.py
