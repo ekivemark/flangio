@@ -1,7 +1,7 @@
 {% load i18n %}
+
 <ul class="nav nav-pills">
   <li class="active"> <a href="/">{% trans "Home" %}</a></li>
-  <li><a href="/mongodb"> Manage MongoDB</a></li>
   <!--<li><a href="/accounts">Users</a></li>-->
 
   {% if user.is_authenticated %}
@@ -9,7 +9,6 @@
   {% else %}
       <li><a href="/accounts/login">{% trans "Login" %}</a></li>
   {% endif %}    
-  
   
 </ul>
 
