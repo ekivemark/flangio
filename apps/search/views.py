@@ -74,9 +74,11 @@ def custom_report(request, database_name=settings.MONGO_DB_NAME,
             if data['outputformat']=="xls":
                 return search_xls(request, collection=None, return_keys=return_keys,
                                    query=json.loads(data['query']))
+            
             elif data['outputformat']=="csv":
                 return search_csv(request, collection=None, return_keys=return_keys,
                                    query=json.loads(data['query']))
+            
             elif data['outputformat']=="xml":
                 return search_xml(request, collection=None, return_keys=return_keys,
                                    query=json.loads(data['query']))
@@ -97,25 +99,6 @@ def custom_report(request, database_name=settings.MONGO_DB_NAME,
 
     return render_to_response('search/select-keys.html',
          {'form': KeysForm(ckeys, label_dict),}, RequestContext(request))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -586,9 +569,9 @@ def complex_search(request, database_name=settings.MONGO_DB_NAME,
     return render_to_response('generic/bootstrapform.html',
                              RequestContext(request, context,))
 
-def saved_searches(request):
+def display_saved_searches(request):
      
     savedsearches = SavedSearch.objects.all()
     context = {"savedsearches": savedsearches }
-    return render_to_response('search/previous.html',
+    return render_to_response('search/display-saved-searches.html',
                               RequestContext(request, context,))
