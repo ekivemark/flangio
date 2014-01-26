@@ -16,11 +16,6 @@ $('.dropdown-toggle').dropdown();
 
 <div class="container">
       
-            
-      <div class="row">
-      <h1>{% trans "Manage MongoDB" %}</h1>
-      </div>
-      
       
       
       <div class="row">
@@ -103,30 +98,42 @@ $('.dropdown-toggle').dropdown();
      <li><a  href="/mongodb/database/{{d.name}}/collection/{{c}}/update">
             <i class="icon-refresh"></i> {% trans "Update a Document..." %}</a></li>
      
+     <li> <a href="/import/database/{{d.name}}/collection/{{c}}/file">
+            <i class="icon-upload"></i> {% trans "Import CSV..." %}</a></li>
 
      <li><a  href="/mongodb/database/{{d.name}}/collection/{{c}}/ensure-index">
             <i class="icon-fire"></i> {% trans "Create an Index..." %}</a></li>
 
-         
+     <li role="presentation" class="divider"></li>       
+      
+      <li> <a  target=_blank href="/search/database/{{d.name}}/collection/{{c}}/search.json">
+            <i class="icon-search"></i> {% trans "Simple JSON Search" %}</a></li>
+      
+      <li> <a  target=_blank href="/search/database/{{d.name}}/collection/{{c}}/search.html">
+            <i class="icon-search"></i> {% trans "Simple HTML Search" %}</a></li>
+      
+      <li> <a  target=_blank href="/search/database/{{d.name}}/collection/{{c}}/search.csv">
+            <i class="icon-search"></i> {% trans "Simple CSV Search" %}</a></li>
+      
+
+      
       <li><a  href="/search/database/{{d.name}}/collection/{{c}}/create-saved-search">
             <i class="icon-globe"></i> {% trans "Create a Saved Search..." %}</a></li>
       
       <li> <a  href="/search/saved-searches">
             <i class="icon-eye-open"></i> {% trans "View Saved Searches..." %}</a></li>
           
-      <li><a  href="/search/database/{{d.name}}/collection/{{c}}/complex-search">
-            <i class="icon-search"></i> {% trans "Run a Complex Search..." %}</a></li>
+      
           
-      <li> <a href="/import/database/{{d.name}}/collection/{{c}}/previous">
-            <i class="icon-eye-open"></i> {% trans "View Previous Imports..." %}</a></li>
-                
-     <li> <a href="/import/database/{{d.name}}/collection/{{c}}/file">
-            <i class="icon-upload"></i> {% trans "Import Data..." %}</a></li>
+          
+
          
+     
+     <li role="presentation" class="divider"></li>
      <li> <a  href="/mongodb/database/{{d.name}}/collection/{{c}}/delete">
             <i class="icon-step-backward"></i> {% trans "Delete Data from a Collection..." %} </a></li>
 
-
+     
      <li> <a  href="/mongodb/database/{{d.name}}/collection/{{c}}/clear">
             <i class="icon-fast-backward"></i> {% trans "Clear Collection" %} </a></li>
           
