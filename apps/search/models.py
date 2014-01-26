@@ -4,11 +4,10 @@ from django.template.defaultfilters import slugify
 
 
 
-OUTPUT_CHOICES = (("csv","Comma Seperated Value (.csv)"),
-                  ("xls","Microsoft Excel(xls)"),
-                  ("json","JSON"),
-                  ("xml","XML"),
-                  ("html", "HTML"),)
+OUTPUT_CHOICES = (("json","JSON"),
+                  ("html", "HTML"),
+                  ("csv","Comma Seperated Value (.csv)"),
+                  )
 
 class SavedSearch(models.Model):
 
