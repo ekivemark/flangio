@@ -9,7 +9,7 @@ from views import *
 
 urlpatterns = patterns('',
 
-    url(r'^$', showdbs, name="show_dbs"),
+    url(r'^$', login_required(showdbs), name="show_dbs"),
     
     url(r'^new-database$', create_new_database, name="create_new_database"),
 
