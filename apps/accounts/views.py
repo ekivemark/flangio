@@ -21,7 +21,7 @@ from django.contrib.auth.forms import SetPasswordForm
 def simple_logout(request):
     logout(request)
     messages.success(request, _("Logged out successfully."))
-    return HttpResponseRedirect(reverse('home'))
+    return HttpResponseRedirect(reverse('login'))
 
 
 def simple_email_login(request):
