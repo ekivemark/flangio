@@ -59,7 +59,7 @@ urlpatterns = patterns('',
     url(r'^database/(?P<database_name>[^/]+)/collection/(?P<collection_name>[^/]+)/complex-search$',
          login_required(complex_search), name="complex-search"),
     
-    url(r'^saved-searches$', login_required(saved_searches),
+    url(r'^saved-searches$', login_required(display_saved_searches),
                     name="saved_searches"),
     
     url(r'^build-keys', login_required(build_keys),
