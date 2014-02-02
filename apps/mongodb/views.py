@@ -161,7 +161,7 @@ def create_collection(request, database_name):
                 messages.error(request,"The database creation operation failed.")
                 messages.error(request,result["error"])
             else:
-                messages.success(request,"Database created.")
+                messages.success(request,"Collection created.")
             return HttpResponseRedirect(reverse('show_dbs'))
         else:
             #The form is invalid
