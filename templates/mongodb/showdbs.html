@@ -73,7 +73,7 @@ $('.dropdown-toggle').dropdown();
     <ul class="dropdown-menu">
         <li><a href="/mongodb/database/{{d.name}}/create-collection">
             <i class="icon-plus-sign"></i> Create Collection</a> </li>
-        
+        <li role="presentation" class="divider"></li>   
          <li><a href="/mongodb/database/{{d.name}}/drop">
             <i class="icon-warning-sign"></i> Drop Database</a> </li>
         
@@ -115,19 +115,10 @@ $('.dropdown-toggle').dropdown();
       <li> <a  target=_blank href="/search/database/{{d.name}}/collection/{{c}}/search.csv">
             <i class="icon-search"></i> {% trans "Simple CSV Search" %}</a></li>
       
-
-      
-      <li><a  href="/search/database/{{d.name}}/collection/{{c}}/create-saved-search">
-            <i class="icon-globe"></i> {% trans "Create a Saved Search..." %}</a></li>
-      
       <li> <a  href="/search/saved-searches">
-            <i class="icon-eye-open"></i> {% trans "View Saved Searches..." %}</a></li>
-          
-      
-          
+            <i class="icon-eye-open"></i> {% trans "Saved Searches..." %}</a></li>
           
 
-         
      
      <li role="presentation" class="divider"></li>
      <li> <a  href="/mongodb/database/{{d.name}}/collection/{{c}}/delete">
