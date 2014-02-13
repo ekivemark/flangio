@@ -20,6 +20,9 @@ class SavedSearchForm(forms.ModelForm):
     
 class ComplexSearchForm(forms.Form):
     query = forms.CharField(widget=forms.Textarea)
+    skip = forms.IntegerField(initial=0)
+    limit = forms.IntegerField(initial=200)
+    
     database_name = forms.CharField()
     collection_name = forms.CharField()
     output_format = forms.TypedChoiceField(choices=OUTPUT_CHOICES,
