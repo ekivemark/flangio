@@ -16,9 +16,12 @@ class SavedSearch(models.Model):
                                         default="json")
     title           = models.CharField(max_length=100, unique=True)
     slug            = models.SlugField(max_length=100, unique=True)
-    query           =  models.TextField(max_length=2048, default="{}",
-                
+    query           =  models.TextField(max_length=2048, default="{}",            
                                         verbose_name="JSON Query Dict")
+    
+    sort            =  models.TextField(max_length=2048, default="", blank=True,
+                                        verbose_name="Sort Dict",
+                                        help_text="""e.g. [["somefield", 1], ["someotherfield", -1] ]""")
     
     return_keys   =  models.TextField(max_length=2048, default="", blank=True,
                                       

@@ -19,16 +19,6 @@ from pymongo import MongoClient
 def to_json(results_dict):
     return json.dumps(results_dict, indent = 4)
     
-def massage_dates(qdict):
-
-    for k,v in qdict.items():
-        if k.__contains__("date"):
-            print "i am a date!"
-            v=datetime()
-        if type(v)==type({}):
-            if k.__contains__("datetime"):
-                print "i am a datetime!"
-    return qdict
 
 def filter_social_graph(request, serial_result):
     result_list=[]
@@ -97,7 +87,7 @@ def normalize_list(results_list):
 
 def query_mongo(query={}, database_name=settings.MONGO_DB_NAME,
                 collection_name=settings.MONGO_MASTER_COLLECTION,
-                skip=0, limit=settings.MONGO_LIMIT, return_keys=()):
+                skip=0, sort=None, limit=settings.MONGO_LIMIT, return_keys=()):
     """return a response_dict  with a list of search results"""
     
 
@@ -118,8 +108,14 @@ def query_mongo(query={}, database_name=settings.MONGO_DB_NAME,
                 return_dict[k]=1
             #print "returndict=",return_dict
             mysearchresult=collection.find(query, return_dict).skip(skip).limit(limit)
-        else:
+        else:            
             mysearchresult=collection.find(query).skip(skip).limit(limit)
+        
+        if sort:
+            mysearchresult.sort(sort)
+        
+        [("event_datetime", 1),]
+        
         
         response_dict['num_results']=int(mysearchresult.count(with_limit_and_skip=False))
         response_dict['code']=200
@@ -826,16 +822,7 @@ def raw_query_mongo_db(kwargs, collection_name=None):
     return response_dict
 
 
-def massage_dates(qdict):
 
-    for k,v in qdict.items():
-        if k.__contains__("date"):
-            print "i am a date!"
-            v=datetime()
-        if type(v)==type({}):
-            if k.__contains__("datetime"):
-                print "i am a datetime!"
-    return qdict
 
 
 

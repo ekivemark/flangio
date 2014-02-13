@@ -36,11 +36,21 @@ urlpatterns = patterns('',
                     name="run_saved_search_by_slug"),
 
 
+    #url(r'^run-saved-search/(?P<slug>[^.]+).(?P<output_format>\S+)$',
+    #                login_required(run_saved_search_by_slug),
+    #                name="run_saved_search_by_slug"),
+    
+    
+    url(r'^run-saved-search/(?P<slug>\w+).(?P<output_format>\S+)$',
+                    login_required(run_saved_search_by_slug),
+                    name="run_saved_search_by_slug"),
+    
+    
     url(r'^run-saved-search/(?P<slug>\S+)$',
                     login_required(run_saved_search_by_slug),
                     name="run_saved_search_by_slug"),
     
-
+   
     
     
     

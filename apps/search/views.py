@@ -35,7 +35,7 @@ def build_keys(request):
 
 def prepare_search_results(request, database_name=settings.MONGO_DB_NAME,
                 collection_name=settings.MONGO_MASTER_COLLECTION,
-                skip=0, limit=settings.MONGO_LIMIT, return_keys=(), query={}):
+                skip=0, sort=None, limit=settings.MONGO_LIMIT, return_keys=(), query={}):
     if not query:
         kwargs = {}
         for k,v in request.GET.items():
@@ -48,9 +48,11 @@ def prepare_search_results(request, database_name=settings.MONGO_DB_NAME,
                 del kwargs['skip']
     else:
         kwargs = query
-
+    
+    
+    print "SORT", sort, type(sort)
     result = query_mongo(kwargs, database_name, collection_name,
-                         skip=skip, limit=limit,return_keys=return_keys)
+                         skip=skip, limit=limit, sort=sort, return_keys=return_keys)
     
     return result
     
@@ -105,12 +107,13 @@ def custom_report(request, database_name=settings.MONGO_DB_NAME,
 
 def search_json(request, database_name=settings.MONGO_DB_NAME,
                 collection_name=settings.MONGO_MASTER_COLLECTION,
-                skip=0, limit=settings.MONGO_LIMIT, return_keys=(), query={}):
+                skip=0, limit=settings.MONGO_LIMIT, sort=None, return_keys=(),
+                query={}):
     
-    print database_name, collection_name
+
     
     result = prepare_search_results(request, database_name=database_name,
-                collection_name=collection_name, skip=skip,
+                collection_name=collection_name, skip=skip, sort=sort,
                 limit=limit, return_keys=return_keys, query=query)
 
     if int(result['code'])==200:
@@ -143,10 +146,10 @@ def search_json(request, database_name=settings.MONGO_DB_NAME,
 
 def search_csv(request, database_name=settings.MONGO_DB_NAME,
                 collection_name=settings.MONGO_MASTER_COLLECTION,
-                skip=0, limit=settings.MONGO_LIMIT, return_keys=(), query={}):
+                skip=0, sort=None, limit=settings.MONGO_LIMIT, return_keys=(), query={}):
     
     result = prepare_search_results(request, database_name=database_name,
-                collection_name=collection_name, skip=skip,
+                collection_name=collection_name, sort=sort, skip=skip,
                 limit=limit, return_keys=return_keys, query=query)
 
     #print result.keys()
@@ -177,10 +180,13 @@ def search_csv(request, database_name=settings.MONGO_DB_NAME,
 
 def search_html(request, database_name=settings.MONGO_DB_NAME,
                 collection_name=settings.MONGO_MASTER_COLLECTION,
-                skip=0, limit=settings.MONGO_LIMIT, return_keys=(), query={}):
+                sort=None, skip=0, limit=settings.MONGO_LIMIT, return_keys=(),
+                query={}):
+    
+    
     timestamp = datetime.now().strftime('%m-%d-%Y %H:%M:%S UTC')    
     result = prepare_search_results(request, database_name=database_name,
-                collection_name=collection_name, skip=skip,
+                collection_name=collection_name, sort=sort, skip=skip,
                 limit=limit, return_keys=return_keys, query=query)
 
     #print result.keys()
@@ -295,23 +301,31 @@ def load_labels(request):
 
 
 
-def run_saved_search_by_slug(request, slug, skip=0, limit = settings.MONGO_LIMIT):
+def run_saved_search_by_slug(request, slug, output_format=None, skip=0,
+                             sort=None,limit = settings.MONGO_LIMIT):
+    error = False
+    response_dict = {}
+    
     ss = get_object_or_404(SavedSearch,  slug=slug, user=request.user)
     
-    not_int = False
-    response_dict = {}
+    if output_format:
+        if output_format not in ("json", "csv", "html"):
+            response_dict['message']="The putput format must be json, csv, or html."
+            error = True
+        else:
+            ss.output_format=output_format
     try:
         skip = int(skip)
     except ValueError:
         response_dict['message']="Skip must be an integer."
-        not_int = True
+        error = True
     try:
         limit = int(limit)
         
     except ValueError:
         response_dict['message']="Limit must be an integer."
-        not_int = True
-    if not_int:
+        error = True
+    if error:
         response_dict['num_results']=0
         response_dict['code']=400
         response_dict['type']="Error"
@@ -322,8 +336,11 @@ def run_saved_search_by_slug(request, slug, skip=0, limit = settings.MONGO_LIMIT
     
     try:
         query = json.loads(ss.query)
-        #print ss.query
-    
+        if ss.sort:
+            print ss.sort
+            sort = json.loads(ss.sort)
+ 
+ 
     except ValueError:
         response_dict = {}
         response_dict['num_results']=0
@@ -345,20 +362,16 @@ def run_saved_search_by_slug(request, slug, skip=0, limit = settings.MONGO_LIMIT
     if ss.output_format=="json":
         return search_json(request, database_name=ss.database_name,
                            collection_name =ss.collection_name,
+                           sort=sort,
                            query = query, skip=int(skip), limit=int(ss.default_limit),
                            return_keys= key_list)
     
-    if ss.output_format=="xml":
-        return search_xml(request,
-                          database_name=ss.database_name,
-                           collection_name =ss.collection_name,
-                          query = query, skip=int(skip), limit=int(ss.default_limit),
-                           return_keys= key_list) 
-    
+
     if ss.output_format=="html":
         return search_html(request,
                           database_name=ss.database_name,
                           collection_name =ss.collection_name,
+                          sort=sort,
                           query = query, skip=int(skip), limit=int(ss.default_limit),
                           return_keys= key_list) 
     
@@ -370,12 +383,6 @@ def run_saved_search_by_slug(request, slug, skip=0, limit = settings.MONGO_LIMIT
                           query = query, skip=int(skip), limit=int(ss.default_limit),
                            return_keys= key_list)
     
-    if ss.output_format=="xls":
-        return search_xls(request,
-                          database_name=ss.database_name,
-                          collection_name =ss.collection_name,
-                          query = query, skip=int(skip), limit=int(ss.default_limit),
-                          return_keys= key_list)
     
     #these next line "should" never execute.
     response_dict = {}
@@ -412,8 +419,6 @@ def create_saved_search(request, database_name=settings.MONGO_DB_NAME,
                                             RequestContext(request))
             
    #this is a GET
-    
-
     idata ={'database_name': database_name,
             'collection_name': collection_name}
     
@@ -428,15 +433,22 @@ def create_saved_search(request, database_name=settings.MONGO_DB_NAME,
     
 def complex_search(request, database_name=settings.MONGO_DB_NAME,
                 collection_name=settings.MONGO_MASTER_COLLECTION,
-                        skip=0, limit=200, return_keys=()):
+                        sort=None, skip=0, limit=200, return_keys=()):
     name = _("Run a Complex Search")
     if request.method == 'POST':
         form = ComplexSearchForm(request.POST)
         if form.is_valid():
             query = form.cleaned_data['query']
             limit = form.cleaned_data['limit']
+            sort = form.cleaned_data['sort']
+
             try:
                 query = json.loads(query)
+                
+                if sort:
+                    sort = json.loads(sort)
+                
+
             except ValueError:
                 #Quert was not valid JSON ------------------
                 response_dict = {}
@@ -450,13 +462,11 @@ def complex_search(request, database_name=settings.MONGO_DB_NAME,
                                     mimetype="application/json")
             #Query was valid JSON    
             if form.cleaned_data['output_format']=="json":
-                return search_json(request, query = query, limit=limit)
-            if form.cleaned_data['output_format']=="xml":
-                return search_xml(request, query = query, limit=limit) 
+                return search_json(request, query = query, sort=sort, limit=limit, skip=skip)
             if form.cleaned_data['output_format']=="csv":
-                return search_csv(request, query = query, limit=limit)
-            if form.cleaned_data['output_format']=="xls":
-                return search_xls(request, query = query, limit=limit)
+                return search_csv(request, query = query, sort=sort, limit=limit, skip=skip)
+            if form.cleaned_data['output_format']=="html":
+                return search_html(request, query = query, sort=sort, limit=limit, skip=skip)
             
             #these next line "should" never execute, but here just in case.
             response_dict = {}
