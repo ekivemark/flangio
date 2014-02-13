@@ -9,14 +9,13 @@ from django.http import HttpResponse
 from datetime import datetime
 import csv, string
 import xlwt
-from utils import get_collection_keys, get_collection_labels
-from ..utils import build_non_observational_key
+from ..utils import get_collection_keys, get_collection_labels, build_non_observational_key
 
 def flatten_results(keylist, listresults, exclude=()):
 
-    
+
     print "keylist", keylist
-    print listresults
+    #print listresults
     #create a blank list to use as our table
     rows =[]
     #if settings.OTHER_LABELS:
@@ -29,16 +28,17 @@ def flatten_results(keylist, listresults, exclude=()):
     for i in keylist:
         row[i]=i
     rows.append(row)
-    print "results", len(listresults)
+    #print "results", len(listresults)
     #write the rest of the rows.
     for i in listresults:
-
         #Make the other rows
         row=SortedDict()
         for j in keylist:
             if i.has_key(j):
+
                 if i[j]:
-                    row[j] ="".join(s for s in i[j] if s in string.printable)
+                    
+                    row[j] ="".join(s for s in str(i[j]) if s in string.printable)
                 else:
                     row[j]=""
             else:
