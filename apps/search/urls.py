@@ -22,20 +22,14 @@ urlpatterns = patterns('',
     url(r'^database/(?P<database_name>[^/]+)/collection/(?P<collection_name>[^/]+)/search.csv$',
          login_required(search_csv), name="search_csv_w_params"),
     
-    #return Excel
-    url(r'^search.xls$',  login_required(search_xls), name="search_xls"),
-    url(r'^database/(?P<database_name>[^/]+)/collection/(?P<collection_name>[^/]+)/search.xls$',
-         login_required(search_xls), name="search_xls_w_params"),
+
     
     #return HTML Table
     url(r'^search.html$',  login_required(search_html), name="search_html"),
     url(r'^database/(?P<database_name>[^/]+)/collection/(?P<collection_name>[^/]+)/search.html$',
          login_required(search_html), name="search_html_w_params"),
 
-    #return XML
-    url(r'^search.xml$',  login_required(search_xml), name="search_xml"),
-    url(r'^database/(?P<database_name>[^/]+)/collection/(?P<collection_name>[^/]+)/search.xml$',
-         login_required(search_xml), name="search_xml_w_params"),
+
     
     url(r'^run-saved-search/(?P<slug>\S+)/(?P<skip>[^/]+)/(?P<limit>[^/]+)$',
                     login_required(run_saved_search_by_slug),
@@ -55,6 +49,10 @@ urlpatterns = patterns('',
     
     url(r'^database/(?P<database_name>[^/]+)/collection/(?P<collection_name>[^/]+)/create-saved-search$',
          login_required(create_saved_search), name="create_saved_search_w_params"),
+    
+    
+    url(r'^complex-search$',
+        login_required(complex_search), name="complex_search"),
     
     url(r'^database/(?P<database_name>[^/]+)/collection/(?P<collection_name>[^/]+)/complex-search$',
          login_required(complex_search), name="complex-search"),
@@ -88,34 +86,26 @@ urlpatterns = patterns('',
     #return CSV
     url(r'^api/search.csv$',  json_login_required(search_csv),
         name="api_search_csv"),
+    
     url(r'^api/database/(?P<database_name>[^/]+)/collection/(?P<collection_name>[^/]+)/search.csv$',
          json_login_required(search_csv), name="api_search_csv_w_params"),
 
  
-    #return Excel
-    url(r'^api/search.xls$',  json_login_required(search_xls),
-        name="api_search_xls"),
-    url(r'^api/database/(?P<database_name>[^/]+)/collection/(?P<collection_name>[^/]+)/search.xls$',
-         json_login_required(search_xls), name="api_search_xls_w_params"),
-    
+       
     #return HTML Table
     url(r'^api/search.html$',  json_login_required(search_html),
         name="api_search_html"),
+    
     url(r'^api/database/(?P<database_name>[^/]+)/collection/(?P<collection_name>[^/]+)/search.html$',
          json_login_required(search_html), name="api_search_html_w_params"),
-
-
-
-    #return XML
-    url(r'^api/search.xml$',  json_login_required(search_xml),
-        name="api_search_xml"),
-    url(r'^api/database/(?P<database_name>[^/]+)/collection/(?P<collection_name>[^/]+)/search.xml$',
-         json_login_required(search_xml), name="api_search_xml_w_params"),
-
     
     url(r'^api/run-saved-search/(?P<slug>\S+)$',
         json_login_required(run_saved_search_by_slug),
         name="run_saved_search_by_slug"),
+    
+    url(r'^api/complex-search$',
+        json_login_required(complex_search),
+        name="api_complex_search"),
     
     url(r'^api/database/(?P<database_name>[^/]+)/collection/(?P<collection_name>[^/]+)/complex-search$',
          json_login_required(complex_search), name="api_complex_search"),
