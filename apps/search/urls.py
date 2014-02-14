@@ -101,7 +101,6 @@ urlpatterns = patterns('',
          json_login_required(search_csv), name="api_search_csv_w_params"),
 
  
-       
     #return HTML Table
     url(r'^api/search.html$',  json_login_required(search_html),
         name="api_search_html"),

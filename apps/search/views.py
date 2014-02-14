@@ -441,13 +441,11 @@ def complex_search(request, database_name=settings.MONGO_DB_NAME,
             query = form.cleaned_data['query']
             limit = form.cleaned_data['limit']
             sort = form.cleaned_data['sort']
-
             try:
                 query = json.loads(query)
                 
                 if sort:
                     sort = json.loads(sort)
-                
 
             except ValueError:
                 #Quert was not valid JSON ------------------
