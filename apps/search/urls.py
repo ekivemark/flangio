@@ -114,10 +114,10 @@ urlpatterns = patterns('',
         name="run_saved_search_by_slug"),
     
     url(r'^api/complex-search$',
-        json_login_required(complex_search),
+        json_login_required(csrf_exempt(complex_search)),
         name="api_complex_search"),
     
     url(r'^api/database/(?P<database_name>[^/]+)/collection/(?P<collection_name>[^/]+)/complex-search$',
-         json_login_required(complex_search), name="api_complex_search"),
+         json_login_required(csrf_exempt(complex_search)), name="api_complex_search"),
 
     )
