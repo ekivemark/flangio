@@ -29,25 +29,25 @@ directed user graph.
 How you can use flangio for your Projects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Most simply, you can use flangio strictly as a web-based manger for MongoDB.
+Most simply, you can use flangio strictly as a web-based manager for MongoDB.
 You can also use flangio as a starting point for your own application or own
 customized API.  Many of the features are optional and can be turned of
-and on to suite your specific needs by adjusting the `settings.py` file..
+and on to suit your specific needs by adjusting the `settings.py` file..
 
 
 You can use flangio as a "backend database" that is accessed primarily by
 external systems, via RESTful API, and you can build your own Django application
-right inside the flangio project, (therefore accessing MongoDB natievly as opposed
+right inside the flangio project, (therefore accessing MongoDB natively as opposed
 through the RESTful API). You simply build out your own Django app (and related urls)
 inside `flangio/apps`. If you create an application on flangio you can access
-MongoDB natievly, via pymongo or another 3rd party MongoDB client.
+MongoDB natively, via pymongo or another 3rd party MongoDB client.
 
 Sample Project - Quantified-Clan
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 There is a sample application bundled with flangio called "qualified-clan". This
 is designed to function as a "family-based" PHR where everyone with an account
-can see everyone's else's data.  More about that here.
+can see everyone else's data.  More about that here.
 
 
 This is a web application that plots weight, blood pressure measurements, over
@@ -99,14 +99,14 @@ Configuration Options
 flangio extends Django's `settings.py` file for its custom settings parameters.
 
 
-    # Django default settings for RESRCat------------------------------------
+    # Django default settings for RESTCat------------------------------------
     # Anything in this file can overridden by creating a
     # settings_local.py file and placing additional settngs there.
     .
     .
     # flangio Default Settings -------------------------------------------------
     
-    # The next 2 setings ensure that the transaction time is no more off +/-
+    # The next 2 settings ensure that the transaction time is no more off +/-
     # MAX_TIME_SKEW_MIN
     
     
@@ -117,7 +117,7 @@ flangio extends Django's `settings.py` file for its custom settings parameters.
     
     MAX_TIME_SKEW_MIN    = 5   
     
-    #Depricated
+    #Deprecated
     OTHER_LABELS         = False # If True, use label value from DataLabelMeta instead of default.
 
 
@@ -135,11 +135,11 @@ flangio extends Django's `settings.py` file for its custom settings parameters.
     #When an account is created, then create a self follow social graph.
     AUTO_SELF_FOLLOW     = True
     
-    # Depricated
+    # Deprecated
     ALLOW_UPDATE_TX      = True
     
     
-    # Depricated
+    # Deprecated
     ALLOW_DELETE_TX      = True
     
     
