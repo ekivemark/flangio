@@ -6,7 +6,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('Alan Viars', 'aviars@videntity.com'),
+    ('James T. Kirk', 'jtk@example.com'),
 )
 SITE_ID = 1
 MANAGERS = ADMINS
@@ -36,18 +36,6 @@ DATABASES = {
 # system time zone.
 TIME_ZONE = 'UTC'
 
-# Absolute path to the directory that holds media.
-# Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash if there is a path component (optional in other cases).
-# Examples: "http://media.lawrence.com", "http://example.com/media/"
-# MEDIA_URL moved to settings_local.py
-#MEDIA_URL = 'http://{your_media_source}.s3.amazonaws.com/media/'
-#MEDIA_URL = '/media/'
-
-
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
@@ -64,14 +52,6 @@ SITE_ID = 1
 USE_I18N = True
 
 
-# Local time zone for this installation. Choices can be found here:
-# http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
-# although not all choices may be available on all operating systems.
-# If running in a Windows environment this must be set to the same as your
-# system time zone.
-TIME_ZONE = 'UTC'
-
-
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
@@ -79,7 +59,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-
 MEDIA_URL = '/media/'
 
 
@@ -123,8 +102,7 @@ MIDDLEWARE_CLASSES = (
 AUTHENTICATION_BACKENDS = ('apps.accounts.auth.HTTPAuthBackend',
                            'apps.accounts.auth.EmailBackend',
                            'django.contrib.auth.backends.ModelBackend',
-                          'apps.accounts.auth.BasicBackend',
-                           )
+                          'apps.accounts.auth.BasicBackend',)
                            
 
 #Define our Custom User inside accounts
@@ -137,11 +115,9 @@ SOCIAL_AUTH_USER_MODEL = AUTH_USER_MODEL
 LOGIN_URL = '/accounts/login'
 LOGOUT_URL = '/accounts/logout'
 LOGIN_REDIRECT_URL = '/'
-MIN_PASSWORD_LEN=8
+MIN_PASSWORD_LEN = 8
 
 ROOT_URLCONF = 'flangio.urls'
-
-
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'flangio.wsgi.application'
@@ -150,10 +126,8 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(BASE_DIR, 'apps/experimental/templates'),
     
-    # This should always be the last in the list because it is our
-    # fallback default.
+    # This should always be the last in the list because it is our default.
     os.path.join(BASE_DIR, 'templates'),
     
 )
@@ -190,6 +164,7 @@ INSTALLED_APPS = (
     'apps.mongodb',
     'apps.home',
     'apps.dataimport',
+    
     #'apps.transaction',
     # 3rd Party
     'django_ses',
@@ -208,14 +183,8 @@ ALLOW_DELETE_TX      = True
 ENFORCE_TIME_SANITY  = False
 MAX_TIME_SKEW_MIN    = 5
 OTHER_LABELS         = False # If True, use label value from DataLabelMeta instead of default.
-
-
-
-#This must be 'LOCAL', 'AWSS3', or None
-BINARY_STORAGE = "LOCAL"
-# Referenced in settings_local.py to set location of binary storage.
-
-
+#This must be 'LOCAL', 'AWSS3', or '' for not file support
+BINARY_STORAGE        = ''
 #Global control of output (CSV, XLS).
 SORTCOLUMNS= ()
 ALPHABETIZE_COLUMNS   = False
@@ -245,15 +214,6 @@ PERMISSION_CHOICES=( ('db-all',   'All MongoDB'),
                      ('delete-any-socialgraph',  'delete-any-socialgraph'),
                 )
 
-GENDER_CHOICES=(
-        ('female','female'),
-        ('male','male'),
-        ('transgender_male_to_female','transgender_male_to_female'),
-        ('transgender_female_to_male','transgender_female_to_male'),
-        ('sexual_reassignment_male_to_female','sexual_reassignment_male_to_female'),
-        ('sexual_reassignment_female_to_male','sexual_reassignment_female_to_male'),
-        ('system','system'),
-        )
 
 
 GENDER_CHOICES=(
