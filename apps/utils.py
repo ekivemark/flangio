@@ -26,8 +26,6 @@ def filter_social_graph(request, serial_result):
         grantee=User.objects.get(username=request.user)
     except(User.DoesNotExist):
         error = "The grantee could not be found."
-
-        print error
         grantee=None
 
     for r in serial_result:
@@ -362,8 +360,6 @@ def bulk_csv_import_mongo(csvfile, delete_collection_before_import=False,
         #open the csv file.
         csvhandle = csv.reader(open(csvfile._get_path(), 'rb'), delimiter=',')
         
-
-    
         rowindex = 0
         errors=0
         error_list =[]
@@ -387,7 +383,10 @@ def bulk_csv_import_mongo(csvfile, delete_collection_before_import=False,
                 #Only populate fields that are not blank.
                 for k,v in record.items():
                     if v:
-                        kwargs[k]=v
+                        if v.isdigit():
+                            kwargs[k]=int(v)
+                        else:
+                            kwargs[k]=v
                         
                 try:
                     
