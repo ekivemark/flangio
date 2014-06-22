@@ -16,7 +16,6 @@ from ..accounts.decorators import access_required
 from ..accounts.models import Permission
 from forms import SavedSearchForm, ComplexSearchForm
 from ..utils import *
-
 from models import SavedSearch
 from xls_utils import convert_to_xls, convert_to_csv, convert_labels_to_xls, convert_to_rows
 from dict2xml import dict2xml
@@ -50,7 +49,7 @@ def prepare_search_results(request, database_name=settings.MONGO_DB_NAME,
         kwargs = query
     
     
-    print "SORT", sort, type(sort)
+    #print "SORT", sort, type(sort)
     result = query_mongo(kwargs, database_name, collection_name,
                          skip=skip, limit=limit, sort=sort, return_keys=return_keys)
     
