@@ -212,7 +212,7 @@ PERMISSION_CHOICES=( ('db-all',   'All MongoDB'),
                      ('create-other-users',  'create-other-users'),   
                      ('create-any-socialgraph', 'create-any-socialgraph'),
                      ('delete-any-socialgraph',  'delete-any-socialgraph'),
-                )
+                    )
 
 
 
