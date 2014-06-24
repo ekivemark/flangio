@@ -111,6 +111,9 @@ AUTH_USER_MODEL = 'accounts.flangioUser'
 #Tell Django social-ath about the custom model
 SOCIAL_AUTH_USER_MODEL = AUTH_USER_MODEL
 
+#Cast strings or unicode that contains all numbers to integers.
+CAST_STRINGS_TO_INTEGERS = False
+
 
 LOGIN_URL = '/accounts/login'
 LOGOUT_URL = '/accounts/logout'
@@ -118,6 +121,10 @@ LOGIN_REDIRECT_URL = '/'
 MIN_PASSWORD_LEN = 8
 
 ROOT_URLCONF = 'flangio.urls'
+
+
+
+
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'flangio.wsgi.application'
