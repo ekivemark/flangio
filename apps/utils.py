@@ -100,6 +100,11 @@ def query_mongo(query={}, database_name=settings.MONGO_DB_NAME,
         collection   = db[str(collection_name)]
         
         
+        #Cast the query to integers 
+        if settings.CAST_STRINGS_TO_INTEGERS: 
+            query = cast_number_strings_to_integers(query)
+        
+        
         if return_keys:
             return_dict={}
             for k in return_keys:
@@ -220,8 +225,6 @@ def delete_mongo(query={}, database_name=settings.MONGO_DB_NAME,
 def write_mongo(document, database_name=settings.MONGO_DB_NAME,
                  collection_name=settings.MONGO_MASTER_COLLECTION,
                  update = False):
-    
-
     """Write a document to the collection. Return a response_dict containing
     the written record. Method functions as both insert or update based on update
     parameter"""
@@ -233,6 +236,11 @@ def write_mongo(document, database_name=settings.MONGO_DB_NAME,
                            port=settings.MONGO_PORT)
         db          =   mc[str(database_name)]
         collection   = db[str(collection_name)]
+        
+        
+        # Cast the query to integers 
+        if settings.CAST_STRINGS_TO_INTEGERS: 
+            query = cast_number_strings_to_integers(query)
         
         potential_key_found = False
         existing_transaction_id = None
@@ -821,7 +829,20 @@ def raw_query_mongo_db(kwargs, collection_name=None):
     return response_dict
 
 
+def cast_number_strings_to_integers(d):
+    """d is a dict"""
+    for k,v in d.items():
+        print type(v)
+        if determine_if_str_or_unicode(v):
+            if v.isdigit(): 
+                d[k] = int(v) 
+    return d
 
+def determine_if_str_or_unicode(s):
+    #if str or unicode return True, else False.
+    if isinstance(s, str) or isinstance(s, unicode):
+        return True
+    return False
 
 
 
