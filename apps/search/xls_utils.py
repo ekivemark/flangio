@@ -34,9 +34,14 @@ def flatten_results(keylist, listresults, exclude=()):
         row=SortedDict()
         for j in keylist:
             if i.has_key(j):
-
+                
+                #print i[j]
+                
                 if i[j]:
-                    row[j] ="".join(s for s in i[j].encode("ascii", errors="ignore") if s in string.printable)
+                    if type(i[j])==type([]) or type(i[j])==type({}) :
+                        row[j]=str(i[j])
+                    else:
+                        row[j] ="".join(s for s in i[j].encode("ascii", errors="ignore") if s in string.printable)
                 else:
                     row[j]=""
             else:
