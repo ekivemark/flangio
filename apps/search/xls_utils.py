@@ -41,7 +41,11 @@ def flatten_results(keylist, listresults, exclude=()):
                     if type(i[j])==type([]) or type(i[j])==type({}) :
                         row[j]=str(i[j])
                     else:
-                        row[j] ="".join(s for s in i[j].encode("ascii", errors="ignore") if s in string.printable)
+                         # Avoiding int object has no attribute encode
+                        if isinstance(i[j],(int, long)):
+                            row[j] =str(i[j])
+                        else:
+                            row[j] ="".join(s for s in i[j].encode("ascii", errors="ignore") if s in string.printable)
                 else:
                     row[j]=""
             else:
