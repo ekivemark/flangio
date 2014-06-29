@@ -99,7 +99,7 @@ Configuration Options
 flangio extends Django's `settings.py` file for its custom settings parameters.
 
 
-    # Django default settings for RESTCat------------------------------------
+    # Django default settings for Flangio------------------------------------
     # Anything in this file can overridden by creating a
     # settings_local.py file and placing additional settngs there.
     .
@@ -171,7 +171,7 @@ flangio extends Django's `settings.py` file for its custom settings parameters.
     MONGO_LIMIT = 200
     
     
-    # This file creates an ever incrementing integer ID for every MUSLI-compliant
+    # This file creates an ever incrementing integer ID for every MUESLI-compliant
     # transaction. This is basicly identical to Twitter's sinceid field.
     # In production on high-vaulme systems place this on its own filesystem or
     replace this with a database.
@@ -179,7 +179,9 @@ flangio extends Django's `settings.py` file for its custom settings parameters.
     SINCE_ID_FILE = os.path.join(BASE_DIR, 'db/since.id')
     
     
-    #Defaulted to MUESLI See http://code.google.com/p/muesli for more information.
+    # Defaulted to MUESLI See http://code.google.com/p/muesli for more information.
+    # MUESLI = Mobile Universal Encapsulated Serialized Longitudinal Information
+    
     
     ALLOWABLE_TRANSACTION_TYPES = ("text","tweet", "omhe")
     
@@ -196,7 +198,7 @@ flangio extends Django's `settings.py` file for its custom settings parameters.
                                    "edi", )
 
 
-Installation on Ubuntu 13.04:
+Installation on Ubuntu 14.04:
 -----------------------------
 
 
@@ -206,8 +208,11 @@ These instructions are for Ubuntu 13.04, but can be modified to support other
 non-debian Linux sources. Install some prerequisites.
 
     sudo apt-get update
-    sudo-apt-get install python-pip build-essential python-virtualenv python-virtualenvwrapper apache2  libapache2-mod-wsgi python-pymongo python-bson python-dev nmap git
+    sudo apt-get upgrade
+    sudo-apt-get install python-pip build-essential python-virtualenv apache2 libapache2-mod-wsgi python-pymongo python-bson python-dev nmap git
 
+    sudo apt-get install python-setuptools
+    sudo pip install virtualenvwrapper
 
 Now install MongoDB. See
 (http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/) for more
@@ -217,6 +222,7 @@ information.
     echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
     sudo apt-get update
     sudo apt-get install mongodb-10gen
+    sudo apt-get update
     
     
 Create a working directory to hold our Django projects, then change into that
@@ -232,14 +238,13 @@ Download most recent flangio using Git:
     
 Install other python requirements from a requirements file (Django, etc.)
 
-     sudo pip install -r flangio/requirements.txt
+     sudo pip install -r flangio/config/requirements.txt
      
 
 Using Django's `manage.py` command, create the project's relational database
 (i.e. not MongoDB).  
 
     python manage.py syncdb
-
 
 
 These tables manage users, accounts, and other information. Some tables are
@@ -255,16 +260,43 @@ Change the permissions on the entire folder so Apache can use it. (SQLite specif
 
     chmod -R 777 db   
     
-Add a couple lines to the file `/etc/apache2/sites-available/default` inside the
+Flangio also needs to have permission to use the uploads folder. 
+
+    chmod -R 777 uploads
+    
+Add a couple lines to the file `/etc/apache2/sites-available/000-default.conf` inside the
 `<VirtualHosts></VirtualHosts>` tags.
 
     WSGIScriptAlias / /home/ubuntu/django-projects/flangio/flangio/config/apache/django.wsgi
-    WSGIPassAuthorization O
+    WSGIPassAuthorization off
+
+Add the following lines to the same file, inside the same <VirtualHosts></VirtualHosts> section. 
+This is needed to allow Apache to access the WSGI file used by Flangio
+
+    <Directory /home/ubuntu/django-projects/flangio/flangio/config/apache>
+      <IfVersion < 2.3 >
+       Order allow,deny
+       Allow from all
+      </IfVersion>
+      <IfVersion >= 2.3>
+       Require all granted
+      </IfVersion>
+    </Directory>
+
+
 
 Restart Apache
 
     sudo service apache2 restart
     
+    
+If you haven't started MongoDB do that now:
+
+    sudo /etc/init.d/mongod start
+    
+or using the command:
+
+    sudo start mongod
     
 For more information on configuring Django with apache or other Web servers
 such as NGINX, see https://docs.djangoproject.com/en/1.3/howto/deployment/modwsgi/.
