@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.db.utils import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
-from forms import APIUserCreationForm, UserCreationForm, LoginForm, UserChangeForm
+from forms import *
 from decorators import json_login_required, access_required
 from ..socialgraph.models import SocialGraph
 from django.utils.translation import ugettext_lazy as _
@@ -64,7 +64,7 @@ def simple_email_login(request):
 
 
 
-#@login_required
+
 @json_login_required
 def api_test_credentials(request):
     message ="Your API credentials for user %s are valid." % (request.user)
@@ -74,19 +74,13 @@ def api_test_credentials(request):
 
 
 
-@json_login_required
-def api_user_delete(request, user_id):
-    pass
 
-@json_login_required
-@csrf_exempt
-def api_user_update(request):
-    pass
 
 
 
 @json_login_required
-def api_user_delete(request, email):
+@access_required("create-other-users")
+def api_delete_user(request, email):
     try:
         u = User.objects.get(email=email)
     except User.DoesNotExist:
@@ -103,12 +97,12 @@ def api_user_delete(request, email):
     
     
 
-
-
-
-
+#@login_required
+#@access_required("create-other-users")
+@login_required
 def user_create(request):
-
+    print request.user
+    
     name = _("Create User Account")
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -132,12 +126,13 @@ def user_create(request):
 
 
 
+
 @login_required
+@access_required("create-other-users")
 def user_update(request):
-    print "here"
     name = _("Update User Account")
     if request.method == 'POST':
-        form = UserChangeForm(request.POST)
+        form = UserUpdateForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('home'))
@@ -151,7 +146,7 @@ def user_update(request):
                                            RequestContext(request))
    #this is a GET
     context= {'name':name,
-              'form': UserChangeForm(instance=request.user)
+              'form': UserUpdateForm(instance=request.user)
               }
     return render_to_response('generic/bootstrapform.html',
                               RequestContext(request, context,))
@@ -159,9 +154,32 @@ def user_update(request):
 
 
 
+@json_login_required
+@access_required("create-other-users")
+def api_read_user(request, email):
+    
+    try:
+        u = User.objects.get(email=email)
+    except User.DoesNotExist:
+        message ="User %s does not exist." % (email)
+        jsond={"code": 404, "message": message}
+        jsonstr=json.dumps(jsond, indent = 4,)
+        return HttpResponse(jsonstr, status=404, mimetype="application/json")
+        
+    user = {"first_name": u.first_name, "last_name":u.last_name,
+            "username": u.username, "email": email,
+            "date_joined": str(u.date_joined)}
+    jsond={"code": 200, "user": user}
+    jsonstr=json.dumps(jsond, indent = 4,)
+    return HttpResponse(jsonstr, status=200, mimetype="application/json")
+
+
+
+
+
 @login_required
+@access_required("create-other-users")
 def user_password(request):
-    print "here"
     name = _("Update Password")
     if request.method == 'POST':
         form = SetPasswordForm(request.user, request.POST)
@@ -189,20 +207,21 @@ def user_password(request):
 
 
 
+
+
+
 @json_login_required
 @csrf_exempt
 @access_required("create-other-users")
 def api_user_create(request):
     name = _("API Create User Account")
-
-    #print "here"
     if request.method == 'POST':
         form = APIUserCreationForm(request.POST)
         if form.is_valid():
             result=form.save()
             # our new user was created so lets go ahead and create a social graph
             # between the creator and the new user
-            grantor=User.objects.get(username=result['results'][0]['username'])
+            grantor=User.objects.get(username=result['user']['username'])
             s=SocialGraph.objects.create(grantor=grantor, grantee=request.user)
             if settings.AUTO_SELF_FOLLOW:
                 try:
@@ -231,3 +250,66 @@ def api_user_create(request):
     return render_to_response('accounts/create.html',
                     {'name':name, 'form': APIUserCreationForm(),},
                     RequestContext(request))
+    
+
+
+
+
+
+
+
+
+
+@json_login_required
+@csrf_exempt
+@access_required("create-other-users")
+def api_user_update(request):
+    name = _("API Update User Account")
+    if request.method == 'POST':
+        
+        if not request.POST.has_key('email'):
+            jsonstr = { "code": 400,
+                        "message": "Update did not identify the user by email.",
+                        "errors": ["Update did not identify the user by email.", ]}
+            jsonstr=json.dumps(jsonstr, indent = 4,)
+            return HttpResponse(jsonstr, status=400, mimetype="application/json")
+        
+        try:
+            user = User.objects.get(email=request.POST['email'])
+        except:
+            
+            msg = "User %s not found.  Did you mean to perform a create?" % (request.POST['email'])
+            jsonstr = { "code": 404,
+                        "message": "User not found.",
+                        "errors": [msg, ]}
+            jsonstr=json.dumps(jsonstr, indent = 4,)
+            return HttpResponse(jsonstr, status=400, mimetype="application/json")
+        
+        form = APIUserUpdateForm(request.POST, instance=user)
+        
+        
+        if form.is_valid():
+            result=form.save()
+            jsonstr=result
+            jsonstr=json.dumps(jsonstr, indent = 4,)
+            return HttpResponse(jsonstr, status=200, mimetype="application/json")
+        else:
+            # the form had errors
+            errors=[]
+            if form.non_field_errors():
+                global_error={'global':global_error}
+                errors.append()
+
+            for k,v in form._errors.items():
+                error={'field': k, 'description':v}
+                errors.append(error)
+            jsonstr = { "code": 400,
+                        "message": "User update failed due to errors.",
+                        "errors": errors}
+            jsonstr=json.dumps(jsonstr, indent = 4,)
+            return HttpResponse(jsonstr, status=400, mimetype="application/json")
+    # this is an HTTP GET
+    return render_to_response('accounts/create.html',
+                    {'name':name, 'form': APIUserUpdateForm(),},
+                    RequestContext(request))
+
