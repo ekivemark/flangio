@@ -42,17 +42,7 @@ through the RESTful API). You simply build out your own Django app (and related 
 inside `flangio/apps`. If you create an application on flangio you can access
 MongoDB natively, via pymongo or another 3rd party MongoDB client.
 
-Sample Project - Quantified-Clan
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There is a sample application bundled with flangio called "qualified-clan". This
-is designed to function as a "family-based" PHR where everyone with an account
-can see everyone else's data.  More about that here.
-
-
-This is a web application that plots weight, blood pressure measurements, over
-time for a group. It also has a Twitter integration option. (Read more about that
-here <insert link>.)
 
 Division of Labor
 ~~~~~~~~~~~~~~~~~
@@ -68,7 +58,7 @@ enhancements. OAuth urls for Facebook, Twitter, etc also live under `accounts`.
 
 * `socialgraph` - The social graph assocates users bettween one another via 
 
-* `mongodj` - Create, Upddate, Delete and Index operations for MongoDB Database
+* `mongodb` - Create, Upddate, Delete and Index operations for MongoDB Database
 and Collectionmanagement.
 
 * `search` - Read and seeach operations on MongoDBs.  Included in this application
@@ -302,9 +292,6 @@ For more information on configuring Django with apache or other Web servers
 such as NGINX, see https://docs.djangoproject.com/en/1.3/howto/deployment/modwsgi/.
 For performance, static content should not be served via Django.
 
-Need help? flangio is free open source software, but it just so happens we
-offer commercial support for flangio. This can include managed hosting within
-EC2 and other options. Contact us at sales@videntity.com
 
 
     
