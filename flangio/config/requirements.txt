@@ -1,0 +1,12 @@
+python-omhe
+Django==1.6.1
+django-localflavor
+django_ses
+django-extensions
+django-bootstrap-form
+boto
+pymongo
+xlwt
+dict2xml
+python-memcached
+Pillow

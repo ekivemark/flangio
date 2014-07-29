@@ -1,0 +1,11 @@
+*.pyc
+*.db
+*.pyo
+media/*
+settings_local.*
+docs/_build/*
+db/
+*.kpf
+uploads/
+apps/nppes_write/
+

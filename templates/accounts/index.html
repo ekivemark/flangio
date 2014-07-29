@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block pretitle %}{% endblock %}
+{% block extra_head %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="hero-unit">
+   
+  
+<h2>User Operations</h2>
+
+    <a href="/accounts/user/create" class="btn btn-primary btn-large">Create an Account</a>
+    <a href="/accounts/user/update" class="btn btn-primary btn-large">Update Your Account</a>
+    <a href="/accounts/user/password" class="btn btn-primary btn-large">Update Your Password</a>
+    <a href="/accounts/login" class="btn btn-primary btn-large">Login</a>
+    <a href="/accounts/logout" class="btn btn-primary btn-large">Logout</a>
+
+
+   <p>NOTE: Your application will normally authenticate to the API using using HTTP authentication.
+   If you are just testing things out and using a browser then <a href="/accounts/login">login here</a> first.
+   Create/read/update/delete actions on User can also be accomplished in the <a href="/admin">admin</a>
+   </p>
+
+<h2>MongoDB Management Tools</h2>
+   <p>You can use flangio to import data into MongoDB using a web interface.</p>
+     <a href="/mongodb" class="btn btn-primary btn-large">Manage MongoDB</a>
+
+
+
+{% endblock %}
