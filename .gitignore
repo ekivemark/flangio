@@ -7,7 +7,5 @@ docs/_build/*
 db/
 *.kpf
 uploads/
-apps/lymphedema
-flangio/lymphedemaurls.py
-templates/lymphedema/
+apps/nppes_write/
 
