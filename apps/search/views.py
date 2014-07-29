@@ -429,7 +429,46 @@ def create_saved_search(request, database_name=settings.MONGO_DB_NAME,
                              RequestContext(request, context,))
     
     
+
+def delete_saved_search_by_slug(request, slug):
+    name = _("Edit Saved Search")
+    ss = get_object_or_404(SavedSearch,  slug=slug, user=request.user)
+    ss.delete()
+    messages.success(request,_("Saved search deleted."))
+    return HttpResponseRedirect(reverse('saved_searches'))
+
+
+def edit_saved_search_by_slug(request, slug):
+    name = _("Edit Saved Search")
+    ss = get_object_or_404(SavedSearch,  slug=slug, user=request.user)
     
+    if request.method == 'POST':
+        form = SavedSearchForm(request.POST, instance =ss)
+        if form.is_valid():
+            ss = form.save(commit = False)
+            ss.user = request.user
+            ss.save()
+            messages.success(request,_("Saved search edit saved."))    
+            return HttpResponseRedirect(reverse('saved_searches'))
+        else:
+            #The form is invalid
+             messages.error(request,_("Please correct the errors in the form."))
+             return render_to_response('generic/bootstrapform.html',
+                                            {'form': form,
+                                             'name':name,
+                                             },
+                                            RequestContext(request))
+            
+   #this is a GET
+    context= {'name':name,
+              'form': SavedSearchForm(instance = ss)
+              }
+    return render_to_response('generic/bootstrapform.html',
+                             RequestContext(request, context,))
+
+
+
+
 def complex_search(request, database_name=settings.MONGO_DB_NAME,
                 collection_name=settings.MONGO_MASTER_COLLECTION,
                         sort=None, skip=0, limit=200, return_keys=()):

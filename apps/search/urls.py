@@ -41,9 +41,9 @@ urlpatterns = patterns('',
     #                name="run_saved_search_by_slug"),
     
     
-    url(r'^run-saved-search/(?P<slug>\w+).(?P<output_format>\S+)$',
-                    login_required(run_saved_search_by_slug),
-                    name="run_saved_search_by_slug"),
+    #url(r'^run-saved-search/(?P<slug>\w+).(?P<output_format>\S+)$',
+    #                login_required(run_saved_search_by_slug),
+    #                name="run_saved_search_by_slug"),
     
     
     url(r'^run-saved-search/(?P<slug>\S+)$',
@@ -51,8 +51,13 @@ urlpatterns = patterns('',
                     name="run_saved_search_by_slug"),
     
    
+    url(r'^edit-saved-search/(?P<slug>\S+)$',
+                    login_required(edit_saved_search_by_slug),
+                    name="edit_saved_search_by_slug"),
     
-    
+    url(r'^delete-saved-search/(?P<slug>\S+)$',
+                    login_required(delete_saved_search_by_slug),
+                    name="delete_saved_search_by_slug"),
     
     url(r'^create-saved-search$', login_required(create_saved_search),
                     name="create_saved_search"),
