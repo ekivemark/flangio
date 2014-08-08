@@ -15,7 +15,7 @@ non-debian Linux sources. Install some prerequisites.
 
     sudo apt-get update
     sudo apt-get upgrade
-    sudo-apt-get install python-pip build-essential python-virtualenv apache2 libapache2-mod-wsgi python-pymongo python-bson python-dev nmap git
+    sudo-apt-get install python-pip build-essential python-virtualenv apache2 libapache2-mod-wsgi python-pymongo python-bson python-dev nmap git-core
 
     sudo apt-get install python-setuptools
     sudo pip install virtualenvwrapper

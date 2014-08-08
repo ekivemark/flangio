@@ -1,7 +1,6 @@
 Flang.io - A RESTFul API Toolkit for MongoDB
 ============================================
 
-
 Introduction:
 -------------
 
@@ -29,7 +28,8 @@ directed user graph.
 Installation
 -------------
 
-See README-Istallation.md in the projects `docs` folder.
+See README-Installation.md in this project's `docs` folder.  After installed,
+login and use the "Web-based API Toolkit Console" to get started.
 
 
 How you can use flangio for your Projects
