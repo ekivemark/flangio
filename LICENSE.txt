@@ -1,7 +1,5 @@
-Copyright Alan Viars
-All rights reserved.
-
                      flangio, the ("Software")
+                           by Alan Viars
 
                     GNU GENERAL PUBLIC LICENSE
                        Version 2, June 1991
