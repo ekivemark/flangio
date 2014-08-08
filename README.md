@@ -4,25 +4,16 @@ Flang.io - A RESTFul API Toolkit for MongoDB
 Introduction:
 -------------
 
-Flangio was designed for data collection in a healthcare and research setting,
-but it is a general MongoDB management tool that adds a number of additional
-features.
-
-With Flangio you can:
+Flangio provides a web interface for MongoDB and simplifies building a RESTFul
+APIs in MongoDB. With Flangio you can:
 
 
 * Perform basic database operations via a web-site including the ability to
-easily import CSV and perform searches that return Microsoft Excel(.xls),
-CSV(.csv), HTML(.html), and JSON(.json). - No programming experience required. 
+easily import CSV and perform searches that return  CSV(.csv), HTML(.html),
+and JSON(.json). - No programming experience required. 
 
 * Use flangio's built-in RESTFul API framework or use our examples to quickly
-build your own.  - No programming experience required. 
-
-* Use Django "users" and manage a directed graph (i.e. follow-like relationship)
-between users.
-
-* Selectively return documents (i.e.  filter "row-level") results based on the
-directed user graph.
+build your own.
 
 
 Installation
@@ -52,24 +43,23 @@ Components of Flangio
 ---------------------
 
 There are a handful of core flangio applications.  These are `accounts`,
-`mongodj`, `dataimport`, and `search`. Most fucntions are
-accessiable via web site or a RESTFul API. There project's applications' key
-functions are as follows:
+`mongodb`, `dataimport`, and `search`. Most functions are
+accessible via the API Toolkit Console or from a RESTFul API. There project's
+core applications' are::
 
+* `mongodb` - Create, Update, Delete, and Index operations for MongoDB database
+and collection management.
 
-* `accounts` - Manages users based on Django's traditional `auth.user` with some
+* `accounts` - Manage users based on Django's traditional `auth.user` with some
 enhancements.
-
-* `mongodb` - Create, Upddate, Delete and Index operations for MongoDB Database
-and Collectionmanagement.
 
 * `search` - Read and seeach operations on MongoDBs.  Included in this application
 is the ability to create stored searches and convert default JSON output to other
 formats including `.csv`, and `.xls`.  
 
-* `dataimport` - Import data form other sources such as CSV into MongoDB. For
-larger documents it is reccomended you use the included command line utility
-`csv2mongo`
+* `dataimport` - Import data into MongoDB from a CSV from a web user interface. For
+larger documents it is recommended you use the included command line utility
+`csv2mongo`.
 
 
 
