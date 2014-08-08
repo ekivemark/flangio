@@ -67,7 +67,9 @@ and Collectionmanagement.
 is the ability to create stored searches and convert default JSON output to other
 formats including `.csv`, and `.xls`.  
 
-* `dataimport` - Import data form other sources such as CSV into MongoDB.
+* `dataimport` - Import data form other sources such as CSV into MongoDB. For
+larger documents it is reccomended you use the included command line utility
+`csv2mongo`
 
 
 
