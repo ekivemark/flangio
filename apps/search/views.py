@@ -48,11 +48,10 @@ def prepare_search_results(request, database_name=settings.MONGO_DB_NAME,
     else:
         kwargs = query
     
-    
-    #print "SORT", sort, type(sort)
-    result = query_mongo(kwargs, database_name, collection_name,
-                         skip=skip, limit=limit, sort=sort, return_keys=return_keys)
-    
+
+    result = query_mongo(kwargs, database_name, collection_name, skip=skip, limit=limit,
+                         sort=sort, return_keys=return_keys)
+
     return result
     
 
@@ -110,7 +109,6 @@ def search_json(request, database_name=settings.MONGO_DB_NAME,
                 query={}):
     
 
-    
     result = prepare_search_results(request, database_name=database_name,
                 collection_name=collection_name, skip=skip, sort=sort,
                 limit=limit, return_keys=return_keys, query=query)
@@ -121,7 +119,7 @@ def search_json(request, database_name=settings.MONGO_DB_NAME,
     else:
         response = json.dumps(result, indent =4)
         return HttpResponse(response, status=int(result['code']),
-                            mimetype="application/json")
+                            content_type="application/json")
 
     if settings.RESPECT_SOCIAL_GRAPH:
         listresults=filter_social_graph(request, listresults)
@@ -134,10 +132,10 @@ def search_json(request, database_name=settings.MONGO_DB_NAME,
 
         jsonresults=to_json(result)
         return HttpResponse(jsonresults, status=int(result['code']),
-                            mimetype="application/json")
+                            content_type="application/json")
     else:
         jsonresults=to_json(normalize_results(result))
-        return HttpResponse(jsonresults, status=int(result['code']),mimetype="application/json")
+        return HttpResponse(jsonresults, status=int(result['code']),content_type="application/json")
 
 
 
@@ -173,7 +171,7 @@ def search_csv(request, database_name=settings.MONGO_DB_NAME,
     else:
         jsonresults=to_json(result)
         return HttpResponse(jsonresults, status=int(result['code']),
-                            mimetype="application/json")
+                            content_type="application/json")
 
 
 
@@ -213,10 +211,7 @@ def search_html(request, database_name=settings.MONGO_DB_NAME,
     else:
         jsonresults=to_json(result)
         return HttpResponse(jsonresults, status=int(result['code']),
-                            mimetype="application/json")
-
-
-
+                            content_type="application/json")
 
 
 
@@ -236,7 +231,7 @@ def data_dictionary(request):
             else:
                 response = json.dumps(data['labels'], indent =4)
                 return HttpResponse(response, status=200,
-                                    mimetype="application/json")
+                                    content_type="application/json")
         else:
             #The form contained errors.
             return render_to_response('search/data-dictionary.html',
@@ -281,7 +276,7 @@ def load_labels(request):
             else:
                 response = json.dumps(data['labels'], indent =4)
                 return HttpResponse(response, status=200,
-                                    mimetype="application/json")
+                                    content_type="application/json")
         else:
             #The form contained errors.
             return render_to_response('search/data-dictionary.html',
@@ -295,18 +290,46 @@ def load_labels(request):
 
 
 
-    
-
-
-
-
 def run_saved_search_by_slug(request, slug, output_format=None, skip=0,
                              sort=None,limit = settings.MONGO_LIMIT):
+    
+
     error = False
     response_dict = {}
     
     ss = get_object_or_404(SavedSearch,  slug=slug, user=request.user)
     
+    query = ss.query
+    #if a GET param matches, then replace it
+    
+    for k,v in request.GET.items():
+       if k in query:
+            if v.isdigit() and settings.CAST_STRINGS_TO_INTEGERS:
+                query = query.replace(k,v)
+            else:
+                quoted_value = '"%s"' % (v)
+                query = query.replace(k,quoted_value)
+    
+    try:
+        query = json.loads(query)
+        if ss.sort:
+            #print ss.sort
+            sort = json.loads(ss.sort)
+ 
+ 
+    except ValueError:
+        response_dict = {}
+        response_dict['num_results']=0
+        response_dict['code']=400
+        response_dict['type']="Error"
+        response_dict['results']=[]
+        response_dict['message']="Your query was not valid JSON."
+        response = json.dumps(response_dict, indent =4)
+        return HttpResponse(response, status=int(response_dict['code']),
+                content_type="application/json")
+    
+    
+
     if output_format:
         if output_format not in ("json", "csv", "html"):
             response_dict['message']="The putput format must be json, csv, or html."
@@ -331,25 +354,7 @@ def run_saved_search_by_slug(request, slug, output_format=None, skip=0,
         response_dict['results']=[]
         response = json.dumps(response_dict, indent =4)
         return HttpResponse(response, status=int(response_dict['code']),
-                mimetype="application/json")
-    
-    try:
-        query = json.loads(ss.query)
-        if ss.sort:
-            print ss.sort
-            sort = json.loads(ss.sort)
- 
- 
-    except ValueError:
-        response_dict = {}
-        response_dict['num_results']=0
-        response_dict['code']=400
-        response_dict['type']="Error"
-        response_dict['results']=[]
-        response_dict['message']="Your query was not valid JSON."
-        response = json.dumps(response_dict, indent =4)
-        return HttpResponse(response, status=int(response_dict['code']),
-                mimetype="application/json")
+                content_type="application/json")
     
     
     #setup the list of keys for return if specified.
@@ -392,7 +397,7 @@ def run_saved_search_by_slug(request, slug, output_format=None, skip=0,
     response_dict['message']="Oops something has gone wrong.  Please contact a systems administrator."
     response = json.dumps(response_dict, indent =4)
     return HttpResponse(response, status=int(response_dict['code']),
-                            mimetype="application/json")
+                            content_type="application/json")
 
 
 
@@ -495,7 +500,7 @@ def complex_search(request, database_name=settings.MONGO_DB_NAME,
                 response_dict['message']="Your query was not valid JSON."
                 response = json.dumps(response_dict, indent =4)
                 return HttpResponse(response, status=int(response_dict['code']),
-                                    mimetype="application/json")
+                                    content_type="application/json")
             #Query was valid JSON    
             if form.cleaned_data['output_format']=="json":
                 return search_json(request, query = query, sort=sort, limit=limit, skip=skip)
@@ -513,7 +518,7 @@ def complex_search(request, database_name=settings.MONGO_DB_NAME,
             response_dict['message']="Oops somthing has gone wrong.  Please contact a systems administrator"
             response = json.dumps(response_dict, indent =4)
             return HttpResponse(response, status=int(response_dict['code']),
-                                    mimetype="application/json")
+                                    content_type="application/json")
             
 
         else:
