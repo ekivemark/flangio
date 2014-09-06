@@ -176,14 +176,14 @@ def mongodb_clear_collection(dbname, collectionname):
     
     except:
         #error connecting to mongodb
-        print str(sys.exc_info())
+        #print str(sys.exc_info())
         return str(sys.exc_info())
 
 
 
 
 def mongodb_ensure_index(dbname, collectionname, keys):
-    print """ ensure index """
+    """ ensure index """
     
     l=[]
     response_dict={}
@@ -197,7 +197,7 @@ def mongodb_ensure_index(dbname, collectionname, keys):
     
     except:
         #error connecting to mongodb
-        print str(sys.exc_info())
+        #print str(sys.exc_info())
         return str(sys.exc_info())
 
 
@@ -222,7 +222,7 @@ def mongodb_drop_collection(dbname, collectionname):
     
     except:
         #error connecting to mongodb
-        print str(sys.exc_info())
+        #print str(sys.exc_info())
         return str(sys.exc_info())
 
 
@@ -244,6 +244,6 @@ def mongodb_drop_database(dbname):
     
     except:
         #error connecting to mongodb
-        print str(sys.exc_info())
+        #print str(sys.exc_info())
         return str(sys.exc_info())
  
