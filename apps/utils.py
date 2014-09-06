@@ -55,8 +55,6 @@ def filter_social_graph(request, serial_result):
     return result_list
 
 
-
-
 def normalize_results(results_dict):
     #Define some dummy/default values
     mydt=datetime.now()
@@ -88,7 +86,7 @@ def query_mongo(query={}, database_name=settings.MONGO_DB_NAME,
                 skip=0, sort=None, limit=settings.MONGO_LIMIT, return_keys=()):
     """return a response_dict  with a list of search results"""
     
-
+    
     l=[]
     response_dict={}
     
@@ -104,7 +102,7 @@ def query_mongo(query={}, database_name=settings.MONGO_DB_NAME,
         if settings.CAST_STRINGS_TO_INTEGERS: 
             query = cast_number_strings_to_integers(query)
         
-        
+        #print query
         if return_keys:
             return_dict={}
             for k in return_keys:
@@ -116,10 +114,7 @@ def query_mongo(query={}, database_name=settings.MONGO_DB_NAME,
         
         if sort:
             mysearchresult.sort(sort)
-        
-        [("event_datetime", 1),]
-        
-        
+
         response_dict['num_results']=int(mysearchresult.count(with_limit_and_skip=False))
         response_dict['code']=200
         response_dict['type']="search-results"
@@ -137,6 +132,7 @@ def query_mongo(query={}, database_name=settings.MONGO_DB_NAME,
         response_dict['type']="Error"
         response_dict['results']=[]
         response_dict['message']=str(sys.exc_info())
+    
     return response_dict
 
 
@@ -161,7 +157,7 @@ def query_mongo_sort_decend(query={}, database_name=settings.MONGO_DB_NAME,
             return_dict={}
             for k in return_keys:
                 return_dict[k]=1
-            print "returndict=",return_dict
+            #print "returndict=",return_dict
             mysearchresult=collection.find(query, return_dict).skip(skip).limit(limit).sort(sortkey,DESCENDING)
         else:
             mysearchresult=collection.find(query).skip(skip).limit(limit).sort(sortkey,DESCENDING)
@@ -299,21 +295,20 @@ def write_mongo(document, database_name=settings.MONGO_DB_NAME,
                 history_collection_name = "%s_history" % str(collection_name)
                 history_collection   = db[str(history_collection_name)]
                 
-                print history_collection
-                print existing_mongo_id
+                #print history_collection
+                #print existing_mongo_id
                 
                 history_object = existing_mongo_id
                 
                 
                 history_object['historical_id'] = existing_mongo_id['_id']
                 del history_object['_id']
-                print history_object
+                #print history_object
                 
                 #now write the record to the historical collection
                 written_object = history_collection.insert(history_object)
                 
-            
-            
+        
             
             #update the record
             myobjectid=collection.save(document)
@@ -603,10 +598,6 @@ def delete_tx(attrs, collection=None):
 
 
 
-
-
-
-
 def raw_query_mongo_db(kwargs, collection_name=None):
     #for key in kwargs:
     #    print "arg: %s: %s" % (key, kwargs[key])
@@ -832,7 +823,7 @@ def raw_query_mongo_db(kwargs, collection_name=None):
 def cast_number_strings_to_integers(d):
     """d is a dict"""
     for k,v in d.items():
-        print type(v)
+        #print type(v)
         if determine_if_str_or_unicode(v):
             if v.isdigit(): 
                 d[k] = int(v) 
