@@ -297,7 +297,7 @@ def run_saved_search_by_slug(request, slug, output_format=None, skip=0,
     error = False
     response_dict = {}
     
-    ss = get_object_or_404(SavedSearch,  slug=slug, user=request.user)
+    ss = get_object_or_404(SavedSearch,  slug=slug)
     
     query = ss.query
     #if a GET param matches, then replace it
