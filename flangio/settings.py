@@ -91,6 +91,7 @@ SECRET_KEY = 'cw87b^k4+bl#-jj#gf3)%&!^k@fr_j4#p8g@uoyn!ijzmnce1i'
 
 
 MIDDLEWARE_CLASSES = (
+        'corsheaders.middleware.CorsMiddleware',
         'django.middleware.common.CommonMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -174,6 +175,7 @@ INSTALLED_APPS = (
     
     #'apps.transaction',
     # 3rd Party
+    'corsheaders',
     'django_ses',
     'bootstrapform',
     'localflavor',
@@ -232,6 +234,13 @@ GENDER_CHOICES=(
         ('SRFTM','Sexual Reassignment Female to Male'),
         ('S','System'),
         )
+
+#CORS Settings
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_METHODS = (
+        'GET',)
 
 
 # To enable you local settings create or copy the example
