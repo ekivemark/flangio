@@ -11,3 +11,4 @@ xlwt
 dict2xml
 python-memcached
 Pillow
+django-cors-headers
