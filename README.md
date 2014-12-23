@@ -72,8 +72,8 @@ enhancements. OAuth urls for Facebook, Twitter, etc also live under `accounts`.
 and Collectionmanagement.
 
 * `search` - Read and seeach operations on MongoDBs.  Included in this application
-is the ability to create stored searches and convert default JSON output to other f
-ormats including `.csv`, `.xls`, and `.xml`.  
+is the ability to create stored searches and convert default JSON output to other 
+formats including `.csv`, `.xls`, and `.xml`.  
 
 * `dataimport` - Import data form other sources such as CSV into MongoDB.
 
@@ -82,15 +82,15 @@ Following the Design Pattern
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The `socialgraph` features in flangio require that you provide some basic
-fields to your dataset schema.  This is of schema reccomendations define some
-metadata about your data including
+fields to your dataset schema.  This list of schema reccomendations define some
+metadata about your data including:
 
 * Infomation for timezone-aware, accurate, time series information.
 * Identity information. who sends(sender) what(the data) whom(receiver) and
 who was data about (subject).  These may all be the same in some circumstances,
-but when people are acting other's behalf, they are not the same.  This is
+but when people are acting on other's behalf, they are not the same.  This is
 application specific and this is further explained in the next section
-"Confiuration Options".
+"Configuration Options".
 
 
 Configuration Options
@@ -122,7 +122,7 @@ flangio extends Django's `settings.py` file for its custom settings parameters.
 
 
 
-    # If following MUSLEI format, then users related must exist before DB IO can
+    # If following MUESLI format, then users related must exist before DB IO can
     # This goes for all three actors; `sender`, `receiver` and `subject`. 
     USERS_MUST_EXIST     = True
     
@@ -146,7 +146,7 @@ flangio extends Django's `settings.py` file for its custom settings parameters.
     
     # Change this to change how files uploaded are stored. It can be stored on
     the same server  LOCAL means save it to this server, AWSS3 means use S3.
-    # You must have your AWS keys defined in settings for this to work.
+    # You must have your AWS keys defined in settings (or local_settings) for this to work.
     # Allowable values are 'LOCAL' (default), 'AWSS3'.
     
     BINARY_STORAGE = "LOCAL"
@@ -173,7 +173,7 @@ flangio extends Django's `settings.py` file for its custom settings parameters.
     
     # This file creates an ever incrementing integer ID for every MUESLI-compliant
     # transaction. This is basicly identical to Twitter's sinceid field.
-    # In production on high-vaulme systems place this on its own filesystem or
+    # In production on high-volume systems place this on its own filesystem or
     replace this with a database.
     
     SINCE_ID_FILE = os.path.join(BASE_DIR, 'db/since.id')
